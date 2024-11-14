@@ -1,10 +1,18 @@
+import { Route, Routes } from "react-router-dom";
 import ChatWindow from "./components/ChatWindow";
+import Signup from "./views/Signup";
+import Login from "./views/Login";
+import MainLayout from "./components/MainLayout";
 
 function App() {
   return (
-    <div className="bg-primary-500 h-full text-quatertiary-100 py-8 md:py-12 px-6 md:px-16">
-      <ChatWindow />
-    </div>
+    <Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<ChatWindow />} />
+        <Route path="/registrarse" element={<Signup />} />
+        <Route path="/ingresar" element={<Login />} />
+      </Route>
+    </Routes>
   );
 }
 
