@@ -8,7 +8,10 @@ import { onLogin } from "../api/apiAuth";
 
 const Login = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div
+      data-testid="login"
+      className="min-h-screen flex items-center justify-center"
+    >
       <FormContainer checkoutSchema={loginSchema} onSubmit={onLogin}>
         <FormHeader>
           <h1 className={`text-xl font-bold text-center mb-6`}>
