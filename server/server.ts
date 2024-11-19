@@ -59,6 +59,7 @@ mongoose.connection.once("open", () => {
 });
 
 mongoose.connection.on("error", (err: any) => {
+  console.log(process.env.DATABASE_URI)
   console.log(err);
   logEvents(
     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,

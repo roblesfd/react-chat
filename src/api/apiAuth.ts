@@ -1,7 +1,5 @@
 import toast from "react-hot-toast";
 
-console.log(process.env.BACKEND_URL);
-
 const onLogout = async () => {
   try {
     const response = await fetch(process.env.BACKEND_URL + "/auth/logout", {
