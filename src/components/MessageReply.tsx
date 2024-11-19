@@ -1,30 +1,31 @@
-import { faClose, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faReply } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { shortenString } from "../utils/misc";
 import { MessageProps } from "../types/MessageProps";
 import { emptyMessage } from "../utils/mockData";
 
-type MessageEditProps = {
+type MessageReplyProps = {
   setIsVisible: (visible: boolean) => void;
-  setFocusedMessage: (message:MessageProps) => void
+  setFocusedMessage: (message: MessageProps) => void;
   message: MessageProps;
 };
 
-const MessageEdit: React.FC<MessageEditProps> = ({ setIsVisible, setFocusedMessage, message }) => (
+const MessageReply: React.FC<MessageReplyProps> = ({ setIsVisible, setFocusedMessage, message }) => (
   <div
-    data-testid="message-edit"
+    data-testid="message-reply"
     className="flex justify-start items-center gap-3 text-primary-800 bg-primary-50 px-4 pb-2 pt-1"
   >
-    <FontAwesomeIcon icon={faEdit} />
+    <FontAwesomeIcon icon={faReply} />
     <div className="block flex-1">
-      <h3 className="">Editar mensaje</h3>
+      <h3>Responder a mensaje</h3>
       <p className="text-sm">{shortenString(message.content)}...</p>
     </div>
     <button
-      title="Cancelar edición"
+      className=""
+      title="Cancelar respuesta"
       onClick={() => {
+        setFocusedMessage(emptyMessage);
         setIsVisible(false)
-        setFocusedMessage(emptyMessage)
       }}
     >
       <FontAwesomeIcon icon={faClose} />
@@ -32,4 +33,4 @@ const MessageEdit: React.FC<MessageEditProps> = ({ setIsVisible, setFocusedMessa
   </div>
 );
 
-export default MessageEdit;
+export default MessageReply;

@@ -1,6 +1,7 @@
 import { faEllipsis, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MessageProps } from "../types/MessageProps";
+import {v4 as uuid} from "uuid";
 
 const dropdownData = {
   button: (
@@ -17,6 +18,8 @@ const dropdownData = {
     </div>,
   ],
 };
+
+
 
 const dropdownMessageData = {
   button: (
@@ -39,7 +42,7 @@ const mensajes = [
 
 const mockMessageList: MessageProps[] = [
   {
-    id: 1,
+    id: uuid(),
     type: "recipient",
     content:
       "Este es el cuerpo del mensaje khhk  ksdhfk sdkjhsdkjshdfkjshdfkjhsfdkjshdfkjshdfkjshdfkjsdhfkjsdhfkjshdfkjshdfkjshdf dsfhjksdfhjksd fksjdfh ksjdfskdjf hskjdfh skdjf sdkjfhsd kfjhs fksdfhskjd fskdjfh sdfk sdkfjh skdfhsdfk",
@@ -51,11 +54,11 @@ const mockMessageList: MessageProps[] = [
     replyOfMessage: "",
     reactions: [],
     isReply: false,
-    messageToReply: 10,
+    messageToReply: "",
     isEdited: false,
   },
   {
-    id: 2,
+    id: uuid(),
     type: "sender",
     content:
       " Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, rem?",
@@ -67,13 +70,13 @@ const mockMessageList: MessageProps[] = [
     replyOfMessage: "",
     reactions: [] as unknown[],
     isReply: false,
-    messageToReply: 10,
+    messageToReply: "",
     isEdited: true,
   },
 ];
 
 const emptyMessage: MessageProps = {
-  id: 0,
+  id:uuid(),
   type: "sender",
   content: "",
   avatar: "",
@@ -84,12 +87,12 @@ const emptyMessage: MessageProps = {
   replyOfMessage: "",
   reactions: [],
   isReply: false,
-  messageToReply: 0,
+  messageToReply: "",
   isEdited: false,
 };
 
 const dataMessage: MessageProps = {
-  id: 0,
+  id: "100",
   type: "sender",
   content: "Cuerpo del mensaje",
   avatar: "",
@@ -100,7 +103,7 @@ const dataMessage: MessageProps = {
   replyOfMessage: "",
   reactions: [],
   isReply: false,
-  messageToReply: 0,
+  messageToReply: "",
   isEdited: false,
 };
 

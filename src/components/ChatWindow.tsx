@@ -3,72 +3,81 @@ import ChatHeader from "./ChatHeader";
 import ConversationList from "./ConversationList";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
-import { emptyMessage, mensajes, mockMessageList } from "../utils/mockData";
-import { formatDate, formatDateTime, formatTime } from "../utils/dateUtils";
+import { emptyMessage, mensajes } from "../utils/mockData";
 import MessageEdit from "./MessageEdit";
 import { MessageProps } from "../types/MessageProps";
 import { generateFakeUser, itemListGenerator } from "../utils/mockGenerators";
+import MessageReply from "./MessageReply";
 
 const ChatWindow = () => {
-  const [newMessage, setnewMessage] = useState("");
-  const [messageList, setMessageList] =
-    useState<MessageProps[]>(mockMessageList);
+  const [focusedMessage, setFocusedMessage] = useState<MessageProps>(emptyMessage);
+  const [messageList, setMessageList] = useState<MessageProps[]>([]);
   const [isEditMessageVisible, setIsEditMessageVisible] = useState(false);
-  const [editedMessage, setEditedMessage] =
-    useState<MessageProps>(emptyMessage);
+  const [isReplyMessageVisible, setIsReplyMessageVisible] = useState(false);
+  const [messageType, setMessageType] = useState<"edit" | "new"  | "reply">("new");
 
   const conversationListData = itemListGenerator(12, () =>
     generateFakeUser(mensajes)
   );
 
-  const updateObjectInArray = (
-    objectArray: MessageProps[],
-    updatedObject: MessageProps
-  ): MessageProps[] => {
-    return objectArray.map((obj) =>
-      obj.id === updatedObject.id ? updatedObject : obj
-    );
-  };
-
   const dummy = useRef<HTMLDivElement | null>(null);
 
-  const handleNewMessage = (message: string) => {
-    const fecha = new Date();
-    const messageObj = {
-      ...emptyMessage,
-      content: message,
-      createdAt: formatDateTime(formatDate(fecha), formatTime(fecha)),
-    };
-
-    setnewMessage(newMessage);
-    setMessageList([...messageList, messageObj]);
+  const handleShowEditMessage = (messageId: string) => {
+    const editMsg = messageList.find((msg) => msg.id === messageId);
+    if(editMsg) {
+      setFocusedMessage(editMsg);
+      setIsEditMessageVisible(true);
+      setMessageType("edit");
+    }
   };
 
-  const handleDeleteMessage = (messageId: number) => {
+  const handleShowReplyMessage = (messageId: string) => {
+    const replyMsg = messageList.find((msg) => msg.id === messageId);
+    if(replyMsg) {
+      setFocusedMessage({...replyMsg, messageToReply: replyMsg.content});
+      setIsReplyMessageVisible(true);
+      setMessageType("reply");
+    }
+  };
+
+  const handleSendMessage = (message: MessageProps, type: "new" | "edit" | "reply" ) => {
+    if (type === "edit") {
+      handleSaveEditedMessage(message);
+    } else if(type === "new"){
+      handleSaveNewMessage(message);
+    }else{
+      handleSaveRepliedMessage(message);
+    }
+  };
+
+  const handleSaveNewMessage = (message: MessageProps | null) => {
+    if(message){
+      setMessageList([...messageList, message]);
+      setFocusedMessage(emptyMessage);
+    }
+  };
+
+  const handleDeleteMessage = (messageId: string) => {  
     setMessageList((prevList) =>
       prevList.filter((msg) => msg.id !== messageId)
     );
+    setMessageType("new");
   };
 
-  const handleShowEditMessage = (messageId: number) => {
-    const editMsg = messageList.find((msg) => msg.id === messageId);
-    setEditedMessage(editMsg);
-    setIsEditMessageVisible(true);
+  const handleSaveEditedMessage = (message: MessageProps) => {
+    const updatedList = messageList.map(msg => msg.id === message.id ? message : msg);
+    setMessageList(updatedList as MessageProps[]);
+    setFocusedMessage(emptyMessage);
+    setIsEditMessageVisible(false);
+    setMessageType("new");
   };
 
-  const handleSaveEditedMessage = (messageId: number) => {
-    // setMessageList((prevList) => updateObjectInArray(prevList, messageId));
-    // setEditedMessage(emptyMessage);
-    // setIsEditMessageVisible(false);
-  };
-
-  const handleSendMessage = (input: string | number) => {
-    if (typeof input === "string") {
-      handleNewMessage(input);
-    } else if (typeof input === "number") {
-      handleSaveEditedMessage(input);
-    }
-  };
+  const handleSaveRepliedMessage = (message: MessageProps) => {
+    setMessageList([...messageList, message]);
+    setFocusedMessage(emptyMessage);
+    setIsReplyMessageVisible(false);
+    setMessageType("new");
+  }
 
   useEffect(() => {
     // Se utiliza para poder mostrar el mensaje nuevo en la seccion de mensajes
@@ -88,23 +97,39 @@ const ChatWindow = () => {
           <ChatHeader name="Nombre del usuario" />
         </div>
         <div className="h-[500px] bg-white rounded-md overflow-y-scroll">
-          <MessageList
-            height={450}
-            messageList={messageList}
-            onDeleteMessage={handleDeleteMessage}
-            onEditMessage={handleShowEditMessage}
-          />
+              {messageList.length > 0 ?           
+              <MessageList
+                height={450}
+                messageList={messageList}
+                onDeleteMessage={handleDeleteMessage}
+                onEditMessage={handleShowEditMessage}
+                onReplyMessage={handleShowReplyMessage}
+              />
+              :
+              <div className="h-full flex flex-col justify-center items-center">
+                <p className="text-primary-800 text-center mt-6">Envía un mensaje...</p>
+              </div>
+              }
           <div ref={dummy} />
         </div>
         {isEditMessageVisible && (
           <MessageEdit
             setIsVisible={setIsEditMessageVisible}
-            message={editedMessage}
+            setFocusedMessage={setFocusedMessage}
+            message={focusedMessage as MessageProps}
+          />
+        )}
+        {isReplyMessageVisible && (
+          <MessageReply
+            setIsVisible={setIsReplyMessageVisible}
+            setFocusedMessage={setFocusedMessage}
+            message={focusedMessage as MessageProps}
           />
         )}
         <MessageInput
           handleSendMessage={handleSendMessage}
-          inputTextDefault={editedMessage && ""}
+          messageType={messageType}
+          message={focusedMessage}
         />
       </section>
       <section className="hidden md:block md:col-span-3 bg-primary-400 rounded-r-md p-2 md:p-3">

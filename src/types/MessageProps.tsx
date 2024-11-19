@@ -1,5 +1,5 @@
 export type MessageProps = {
-  id: number;
+  id: string;
   type: "recipient" | "sender";
   content: string;
   avatar: string;
@@ -10,6 +10,6 @@ export type MessageProps = {
   replyOfMessage: string;
   reactions: unknown[];
   isReply: boolean;
-  messageToReply: number;
+  messageToReply: string;
   isEdited: boolean;
 };

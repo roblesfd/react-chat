@@ -12,9 +12,9 @@ describe("ChatWindow", () => {
     expect(chatHeader).toBeInTheDocument();
   });
 
-  it("renderiza el componente MessageList como hijo", () => {
-    const messageList = screen.getByTestId("message-list");
-    expect(messageList).toBeInTheDocument();
+  it("no renderiza el componente MessageList como hijo", () => {
+    const messageList = screen.queryByTestId("message-list");
+    expect(messageList).not.toBeInTheDocument();
   });
 
   it("verifica si el componente MessageEdit aun no esta renderizado como hijo", () => {

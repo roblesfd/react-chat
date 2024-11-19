@@ -4,8 +4,9 @@ import MessageItem from "./MessageItem";
 type MessageListProps = {
   height: number;
   messageList: MessageProps[];
-  onDeleteMessage: (id: number) => void;
-  onEditMessage: (id: number) => void;
+  onDeleteMessage: (id: string) => void;
+  onEditMessage: (id: string) => void;
+  onReplyMessage: (id: string) => void;
 };
 
 const MessageList: React.FC<MessageListProps> = ({
@@ -13,6 +14,7 @@ const MessageList: React.FC<MessageListProps> = ({
   messageList,
   onDeleteMessage,
   onEditMessage,
+  onReplyMessage,
 }) => {
   return (
     <div
@@ -25,6 +27,7 @@ const MessageList: React.FC<MessageListProps> = ({
           message={message}
           onDeleteMessage={onDeleteMessage}
           onEditMessage={onEditMessage}
+          onReplyMessage={onReplyMessage}
         />
       ))}
     </div>

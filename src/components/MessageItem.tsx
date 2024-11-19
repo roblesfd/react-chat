@@ -1,21 +1,24 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dropdownMessageData } from "../utils/mockData";
 import Dropdown from "./Dropdown";
-import { faClose, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faEdit, faReply } from "@fortawesome/free-solid-svg-icons";
 import { MessageProps } from "../types/MessageProps";
+import { Link } from "react-router-dom";
 
 type MessageItemProps = {
   message: MessageProps;
-  onDeleteMessage: (id: number) => void;
-  onEditMessage: (id: number) => void;
+  onDeleteMessage: (id: string) => void;
+  onEditMessage: (id: string) => void;
+  onReplyMessage: (id: string) => void;
 };
 
 const MessageItem: React.FC<MessageItemProps> = ({
   message,
   onDeleteMessage,
   onEditMessage,
+  onReplyMessage
 }) => {
-  const { id, type, content, createdAt, isEdited } = message;
+  const { id, type, content, createdAt, isEdited, isReply, messageToReply } = message;
 
   const dropdownData = {
     ...dropdownMessageData,
@@ -38,6 +41,15 @@ const MessageItem: React.FC<MessageItemProps> = ({
           <FontAwesomeIcon icon={faClose} className="text-md" />
         </button>
       </div>,
+      <div key="editar" className="w-full">
+        <button
+          onClick={() => onReplyMessage(id)}
+          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200"
+        >
+          <span>Responder</span>
+          <FontAwesomeIcon icon={faReply} className="text-md" />
+        </button>
+      </div>, 
     ],
   };
 
@@ -65,6 +77,15 @@ const MessageItem: React.FC<MessageItemProps> = ({
         </div>
         {/* contenido de texto */}
         <div className="mt-2 text-[15px] text-">
+          {/* contenido si es una respuesta */}
+          {
+            isReply ? (
+              <div className="rounded-md bg-tertiary-500 py-6 px-4 text-sm mb-3">
+                <Link to="#"><p className="italic">{messageToReply}</p></Link>
+              </div>
+            )
+            : null
+          }
           <p className="break-all">{content}</p>
         </div>
         {isEdited && (

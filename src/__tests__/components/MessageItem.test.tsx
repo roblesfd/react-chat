@@ -6,28 +6,32 @@ import { dataMessage } from "../../utils/mockData";
 describe("MessageItem", () => {
   const deleteMessageMock = jest.fn();
   const editMessageMock = jest.fn();
+  const replyMessageMock = jest.fn();
+
 
   it("renderiza el componente", () => {
     render(
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={dataMessage}
       />
     );
     expect(screen.getByTestId("message-item")).toBeInTheDocument();
   });
 
-  it("contiene el id '0'", () => {
+  it("contiene el id '100'", () => {
     render(
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={dataMessage}
       />
     );
     const msgItem = screen.getByTestId("message-item");
-    expect(msgItem).toHaveAttribute("id", "0");
+    expect(msgItem).toHaveAttribute("id", "100");
   });
 
   it("muestra boton de dropdown si el prop type es 'sender'", () => {
@@ -35,6 +39,7 @@ describe("MessageItem", () => {
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={dataMessage}
       />
     );
@@ -47,6 +52,7 @@ describe("MessageItem", () => {
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={{ ...dataMessage, type: "recipient" }}
       />
     );
@@ -59,6 +65,7 @@ describe("MessageItem", () => {
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={dataMessage}
       />
     );
@@ -76,6 +83,7 @@ describe("MessageItem", () => {
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={dataMessage}
       />
     );
@@ -92,6 +100,7 @@ describe("MessageItem", () => {
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={dataMessage}
       />
     );
@@ -108,6 +117,7 @@ describe("MessageItem", () => {
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={{ ...dataMessage, isEdited: true }}
       />
     );
@@ -120,6 +130,7 @@ describe("MessageItem", () => {
       <MessageItem
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
         message={{ ...dataMessage, isEdited: true }}
       />
     );

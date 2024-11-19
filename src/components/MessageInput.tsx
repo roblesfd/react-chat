@@ -5,25 +5,72 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { MessageProps } from "../types/MessageProps";
+import { emptyMessage } from "../utils/mockData";
+import { v4 as uuid } from "uuid";
+import { formatDate, formatDateTime, formatTime } from "../utils/dateUtils";
 
 type MessageInputProps = {
-  handleSendMessage: (input: string | number) => void;
-  inputTextDefault: string;
+  handleSendMessage: (message: MessageProps,  type: "new" | "edit" | "reply" ) => void;
+  messageType: "new" | "edit" | "reply";
+  message: MessageProps;
 };
 
 const MessageInput: React.FC<MessageInputProps> = ({
   handleSendMessage,
-  inputTextDefault,
+  messageType,
+  message=emptyMessage
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [inputMessage, setInputMessage] = useState<string>(
-    inputTextDefault ? inputTextDefault : ""
-  );
+  const [inputMessage, setInputMessage] = useState<string>("");
 
-  const onInputChange = (value: string) => {
-    setInputMessage(value);
-  };
+  useEffect(() => {
+    setInputMessage(message ? message.content : "")
+  }, [message]);
+
+  const handleClick = () => {
+    const curDate = new Date();
+    const reply = message ? message.messageToReply : "";
+    let finalMessage: MessageProps = emptyMessage;
+
+    switch(messageType) {
+      case "new":
+        finalMessage = {
+          ...emptyMessage,
+          id: uuid(),
+          content: inputMessage, 
+          createdAt: formatDateTime(formatDate(curDate), formatTime(curDate)),
+        };
+        break;
+      case "edit":
+        finalMessage = {
+          ...message, 
+          content: inputMessage, 
+          isEdited: true
+        }
+        break;
+      case "reply":
+        finalMessage = {
+          ...emptyMessage,
+          id: uuid(),
+          content: inputMessage,
+          createdAt: formatDateTime(formatDate(curDate), formatTime(curDate)),
+          isReply: true,
+          messageToReply: reply
+        };  
+        break;
+      default:
+        break;
+    }
+
+    handleSendMessage(
+      finalMessage,
+      messageType
+    );
+    setInputMessage("");
+    setShowEmojiPicker(false);
+  }
 
   return (
     <div
@@ -37,7 +84,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         className="w-4/5 px-1 md:px-4 py-2 focus:outline-none text-primary-600 placeholder:text-primary-500 dark:placeholder:text-primary-30 dark:text-primary-30 bg-tertiary-50 rounded-md"
         placeholder="Escribe un mensaje..."
         value={inputMessage}
-        onChange={(e) => onInputChange(e.target.value)}
+        onChange={(e) => setInputMessage(e.target.value)}
       />
       {/* Área de botones */}
       <div className="w-1/5 px-1 text-lg flex gap-2">
@@ -45,17 +92,16 @@ const MessageInput: React.FC<MessageInputProps> = ({
           title="Enviar mensaje"
           className={`${
             inputMessage
-              ? "hover:bg-primary-30 text-primary-600 cursor-pointer dark:text-primary-30 dark:hover:bg-primary-200"
+              ? 
+              "hover:bg-primary-100 hover:text-primary-40 text-primary-600 cursor-pointer"
               : "text-primary-100 cursor-not-allowed"
-          } rounded-full h-10 w-10`}
-          onClick={() => {
-            handleSendMessage(inputMessage);
-            setInputMessage("");
-            setShowEmojiPicker(false);
-          }}
+            }
+            ${ messageType === "new" ?  "rounded-full h-10 w-10" : "rounded-md bg-primary-200 text-white px-2"}
+            `}
+          onClick={handleClick}
           disabled={!inputMessage}
         >
-          <FontAwesomeIcon icon={faPaperPlane} />
+          {messageType === "reply" || messageType === "edit" ? <p className="text-sm">Guardar</p>  : <FontAwesomeIcon icon={faPaperPlane} />}
         </button>
         <button
           title="Subir archivo"
@@ -69,7 +115,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
             className="hover:bg-primary-30 text-primary-600 dark:text-primary-30 dark:hover:bg-primary-200 rounded-full h-10 w-10"
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
           >
-            <FontAwesomeIcon icon={faFaceSmile} />
+             <FontAwesomeIcon icon={faFaceSmile} />
           </button>
           {showEmojiPicker && (
             <div

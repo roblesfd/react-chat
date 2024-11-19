@@ -1,5 +1,4 @@
 import "@testing-library/jest-dom";
-import MessageItem from "../../components/MessageItem";
 import { render, screen } from "@testing-library/react";
 import MessageStatus from "../../components/MessageStatus";
 

@@ -6,32 +6,35 @@ import { mockMessageList } from "../../utils/mockData";
 describe("MessageList", () => {
   const deleteMessageMock = jest.fn();
   const editMessageMock = jest.fn();
+  const replyMessageMock = jest.fn();
 
-  it("renderiza el componente", () => {
+  beforeEach(() => {
     render(
       <MessageList
         height={500}
         messageList={mockMessageList}
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
       />
     );
+  })
+
+  it("renderiza el componente", () => {
     expect(screen.getByTestId("message-list")).toBeInTheDocument();
   });
 
   it("muestra una lista de MessageItem como hijo cuando se pasa un array con datos", () => {
-    render(
-      <MessageList
-        height={500}
-        messageList={mockMessageList}
-        onDeleteMessage={deleteMessageMock}
-        onEditMessage={editMessageMock}
-      />
-    );
     const msgList = screen.getByTestId("message-list");
     const msgItem = screen.getAllByTestId("message-item");
     expect(msgList).toContainElement(msgItem[0]);
   });
+});
+
+describe("MessageList sin datos", () => {
+  const deleteMessageMock = jest.fn();
+  const editMessageMock = jest.fn();
+  const replyMessageMock = jest.fn();
 
   it("no muestra una lista de MessageItem como hijo cuando se pasa un array vacio", () => {
     render(
@@ -40,8 +43,10 @@ describe("MessageList", () => {
         messageList={[]}
         onDeleteMessage={deleteMessageMock}
         onEditMessage={editMessageMock}
+        onReplyMessage={replyMessageMock}
       />
     );
+
     const msgList = screen.getByTestId("message-list");
     const msgItem = screen.queryByTestId("message-item");
     expect(msgList).not.toContainElement(msgItem);
