@@ -4,6 +4,8 @@ import { Outlet } from "react-router-dom";
 import ModalContext from "../context/ModalContext";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
+import AccountDataContainer from "./AccountDataContainer";
+import AccountDataRow from "./AccountDataRow";
 
 
 
@@ -13,48 +15,25 @@ const LoggedInLayout = () => {
     const {user} = useContext(UserContext);
 
     const modalContent = 
-    <div className="grid grid-cols-8 gap-x-4 gap-y-3 ">
-        <div className="col-span-8 mb-2">
-            <h3 className="font-semibold text-lg">Datos de la cuenta</h3>
-        </div>
-        <div className="col-span-4 text-right">
-            <p className="font-semibold">Nombre:</p>
-        </div>
-        <div className="col-span-4 text-left">
-            <p className="font-medium">{user.name}</p>
-        </div>
-        <div className="col-span-4 text-right">
-            <p className="font-semibold">Apellido:</p>
-        </div>
-        <div className="col-span-4 text-left">
-            <p className="font-medium">{user.lastname}</p>
-        </div>
-        <div className="col-span-4 text-right">
-            <p className="font-semibold">Usuario:</p>
-        </div>
-        <div className="col-span-4 text-left">
-            <p className="font-medium">{user.username}</p>
-        </div>
-        <div className="col-span-4 text-right">
-            <p className="font-semibold">Correo electrónico:</p>
-        </div>
-        <div className="col-span-4 text-left">
-            <p className="font-medium">{user.email}</p>
-        </div>
-    </div>
+        <AccountDataContainer title="Datos de la cuenta">
+            <AccountDataRow label="Nombre" value={user.name} />
+            <AccountDataRow label="Apellido" value={user.lastname} />
+            <AccountDataRow label="Usuario" value={user.username} />
+            <AccountDataRow label="Correo electrónico" value={user.email} />
+        </AccountDataContainer>
 
     return (
 <div data-testid="logged-in-layout">
     <NavBar title="React Chat" position="static">
         <ul className="flex flex-col md:flex-row justify-between items-center gap-2 text-secondary-40">
-        <li
-             className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer text-center"
-             onClick={() => {
-                setModal({
-                    isOpen:true,
-                    content:modalContent
-                });
-            }}>
+            <li
+                className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer text-center"
+                onClick={() => {
+                    setModal({
+                        isOpen:true,
+                        content:modalContent
+                    });
+                }}>
                 Mi cuenta
             </li>
             <li
@@ -70,7 +49,7 @@ const LoggedInLayout = () => {
             </li>
         </ul>
     </NavBar>
-    <div className="bg-primary-500 h-auto text-quatertiary-100 px-2 md:px-16">
+    <div className="h-auto text-quatertiary-100 px-2 md:px-16">
         <Outlet />
     </div>
 </div>

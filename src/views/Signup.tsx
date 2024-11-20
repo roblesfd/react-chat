@@ -6,15 +6,6 @@ import FormInput from "../components/form/FormInput";
 import { signupSchema } from "../utils/inputValidationSchema";
 import { onSignup } from "../api/apiAuth";
 
-// (async () => {
-//   try {
-//     const res = await getAllUsers();
-//     console.log(res);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// })();
-
 const Signup = () => {
   return (
     <div

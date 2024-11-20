@@ -9,14 +9,16 @@ const ProtectedRouteClient : React.FC<ProtectedRouteClientProps> = ({ id }) => {
 
   if (!id && id.length === 0) {
     content = (
-      <p className="my-6 text-3xl text-center ">
-        <Link to="/ingresar" className="font-semibold underline">
-          Por favor inicia sesión
-        </Link>
-      </p>
+    <div className="h-full flex flex-col justify-center items-center">      
+      <p className="text-3xl text-center ">
+          <Link to="/ingresar" className="font-semibold underline">
+            Por favor inicia sesión
+          </Link>
+        </p>
+      </div>
     );
   } else {
-    return <Outlet />;
+    return <Outlet /> 
   }
   return content;
 };

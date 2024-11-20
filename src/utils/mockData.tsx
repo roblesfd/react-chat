@@ -5,7 +5,7 @@ import {v4 as uuid} from "uuid";
 
 const dropdownData = {
   button: (
-    <button className="w-full text-primary-30 hover:bg-primary-100 px-2 py-1 rounded-md ">
+    <button className="w-full text-primary-30 px-2 py-1 rounded-md ">
       <FontAwesomeIcon icon={faEllipsis} />
     </button>
   ),

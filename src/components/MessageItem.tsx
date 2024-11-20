@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dropdownData } from "../utils/mockData";
 import Dropdown from "./Dropdown";
-import { faClose, faEdit, faReply } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faEdit, faReply, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { MessageProps } from "../types/MessageProps";
 import { Link } from "react-router-dom";
 
@@ -20,36 +20,43 @@ const MessageItem: React.FC<MessageItemProps> = ({
 }) => {
   const { id, type, content, createdAt, isEdited, isReply, messageToReply } = message;
 
+  const optionList = [
+    {
+      key:"editar",
+      title: "Editar",
+      onClick: () => onEditMessage(id),
+      icon: faEdit as IconDefinition
+    },
+    {
+      key:"eliminar",
+      title: "Eliminar",
+      onClick: () => onDeleteMessage(id),
+      icon: faClose as IconDefinition
+    },    
+    {
+      key:"responder",
+      title: "Responder",
+      onClick: () => onReplyMessage(id),
+      icon: faReply as IconDefinition
+    },
+  ]
+  
+
   const dropdownInfo = {
     ...dropdownData,
     options: [
-      <div className="w-full">
+      ...optionList.map((option => (
+        <div key={option.key} className="w-full">
         <button
-          onClick={() => onEditMessage(id)}
-          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200"
+          onClick={option.onClick}
+          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 px-2 py-1"
         >
-          <span>Editar</span>
-          <FontAwesomeIcon icon={faEdit} className="text-md" />
+          <span>{option.title}</span>
+          <FontAwesomeIcon icon={option.icon} className="text-md" />
         </button>
-      </div>,
-      <div key="eliminar" className="w-full">
-        <button
-          onClick={() => onDeleteMessage(id)}
-          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200"
-        >
-          <span>Eliminar</span>
-          <FontAwesomeIcon icon={faClose} className="text-md" />
-        </button>
-      </div>,
-      <div key="editar" className="w-full">
-        <button
-          onClick={() => onReplyMessage(id)}
-          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200"
-        >
-          <span>Responder</span>
-          <FontAwesomeIcon icon={faReply} className="text-md" />
-        </button>
-      </div>, 
+      </div>
+      )))
+
     ],
   };
 

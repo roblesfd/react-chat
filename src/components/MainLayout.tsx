@@ -2,7 +2,9 @@ import { Outlet } from "react-router-dom";
 
 function MainLayout() {
   return (
-      <Outlet />
+      <div className="bg-primary-500 h-full text-white">
+        <Outlet />
+      </div>
   );
 }
 

@@ -37,13 +37,16 @@ function App() {
   }
   return (
     <Routes>
-        <Route element={<ProtectedRouteClient id={decoded.UserInfo.id} />}>
+      <Route element={<MainLayout />}>
+      <Route element={<ProtectedRouteClient id={decoded.UserInfo.id} />}>
           <Route element={<LoggedInLayout />}>
             <Route index element={<ChatView />} />
           </Route>
         </Route>
         <Route path="/registrarse" element={<Signup />} />
         <Route path="/ingresar" element={<Login />} />
+      </Route>
+
     </Routes>
   );
 }

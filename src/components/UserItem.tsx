@@ -1,38 +1,43 @@
-import {faUser, faUserLock, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {faUser, faUserLock, faUserPlus, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import {dropdownData } from "../utils/mockData";
 import { UserProps } from "../types/UserProps";
+import { capitalizeString } from "../utils/misc";
 
 export type UserItemProps = {
   data: UserProps;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
+const optionList = [
+  {
+    title: "Agregar",
+    onClick: () => console.log("Agregar!!!"),
+    icon: faUserPlus as IconDefinition
+  },
+  {
+    title: "Bloquear",
+    onClick: () => console.log("Bloquear!!!"),
+    icon: faUserLock as IconDefinition
+  },
+]
+
 const dropdownInfo = {
   ...dropdownData,
-  options: [
+  options: [ ...optionList.map(option => (
     <div className="w-full">
       <button
-        onClick={() => console.log("clicked!!!")}
+        onClick={option.onClick}
         className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
       >
-        <span>Agregar</span>
-        <FontAwesomeIcon icon={faUserPlus} className="text-md" />
+        <span>{option.title}</span>
+        <FontAwesomeIcon icon={option.icon} className="text-md" />
       </button>
-    </div>,
-        <div className="w-full">
-        <button
-          onClick={() => console.log("clicked!!!")}
-          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
-        >
-          <span>Bloquear</span>
-          <FontAwesomeIcon icon={faUserLock} className="text-md" />
-        </button>
-      </div>,
+    </div>
+  ))
   ],
 };
-
 
 const UserItem: React.FC<UserItemProps> = ({
   data,
@@ -49,7 +54,7 @@ const UserItem: React.FC<UserItemProps> = ({
         <FontAwesomeIcon icon={faUser} className="w-full text-xl" />
       </div>
       <div className="col-span-6 block">
-        <h5 className="text-[14px] mb-1 font-semibold">{`${name} ${lastname}`}</h5>
+        <h5 className="text-[14px] mb-1 font-semibold">{`${capitalizeString(name)} ${capitalizeString(lastname)}`}</h5>
         <p className="text-[12px]"></p>
       </div>
       <div className="col-span-2">
