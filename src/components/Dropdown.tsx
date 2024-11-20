@@ -27,7 +27,7 @@ const Dropdown: React.FC<DropdownProps> = ({ button, options }) => {
               return (
                 <li
                   key={id}
-                  className="h-8 flex justify-between items-center cursor-pointer hover:bg-primary-30 rounded  p-2 text-sm"
+                  className="h-8 flex justify-between items-center cursor-pointer hover:bg-primary-30 rounded  py-2 text-sm"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {option}

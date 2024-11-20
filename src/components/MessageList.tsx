@@ -2,7 +2,6 @@ import { MessageProps } from "../types/MessageProps";
 import MessageItem from "./MessageItem";
 
 type MessageListProps = {
-  height: number;
   messageList: MessageProps[];
   onDeleteMessage: (id: string) => void;
   onEditMessage: (id: string) => void;
@@ -10,7 +9,6 @@ type MessageListProps = {
 };
 
 const MessageList: React.FC<MessageListProps> = ({
-  height = 100,
   messageList,
   onDeleteMessage,
   onEditMessage,
@@ -19,7 +17,7 @@ const MessageList: React.FC<MessageListProps> = ({
   return (
     <div
       data-testid="message-list"
-      className={`overflow-y-scroll h-[${height}px] space-y-1 md:space-y-3 px-3`}
+      className={`overflow-y-scroll h-full space-y-1 md:space-y-3 px-3`}
     >
       {messageList.map((message, key) => (
         <MessageItem

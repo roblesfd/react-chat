@@ -11,7 +11,7 @@ import {useEffect, useContext } from "react";
 import UserContext from "./context/UserContext";
 
 function App() {
-  const { setUser} = useContext(UserContext);
+  const {setUser} = useContext(UserContext);
   const token : string = sessionStorage.getItem("jwt")  ? JSON.parse(sessionStorage.getItem("jwt") as string) : "";
 
   useEffect(() => {

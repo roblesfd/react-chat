@@ -2,12 +2,10 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { dropdownData } from "../utils/mockData";
+import { UserProps } from "../types/UserProps";
 
 export type ConversationItemProps = {
-  data: {
-    fullName: string;
-    messageShort: string;
-  };
+  data: UserProps;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
@@ -15,7 +13,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   data,
   onClick = () => {},
 }) => {
-  const { fullName, messageShort } = data;
+  const { name, lastname } = data;
   return (
     <div
       data-testid="conversation-item"
@@ -26,8 +24,8 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
         <FontAwesomeIcon icon={faUser} className="w-full text-xl" />
       </div>
       <div className="col-span-6 block">
-        <h5 className="text-[14px] mb-1 font-semibold">{fullName}</h5>
-        <p className="text-[12px]">{messageShort}...</p>
+        <h5 className="text-[14px] mb-1 font-semibold">{`${name} ${lastname}`}</h5>
+        <p className="text-[12px]">Mensaje...</p>
       </div>
       <div className="col-span-2">
         <Dropdown {...dropdownData} />

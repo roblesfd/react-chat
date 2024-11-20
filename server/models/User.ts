@@ -27,7 +27,11 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     token: { type: String },
     friends: [{ type: Schema.Types.ObjectId, ref: "User", required: false }],
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+UserSchema.virtual('id').get(function() {
+  return this._id.toString();
+})
 
 export default mongoose.model<IUser>("User", UserSchema);
