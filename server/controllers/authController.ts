@@ -57,6 +57,9 @@ const login = async (req: Request, res: Response): Promise<void> => {
     { expiresIn: "7d" }
   );
 
+  foundUser.token = accessToken
+  foundUser.save();
+
   res.cookie("jwt", refreshToken, {
     httpOnly: true,
     secure: true,

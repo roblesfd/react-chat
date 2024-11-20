@@ -1,8 +1,6 @@
 import toast from "react-hot-toast";
 
-const requestGetUserByToken = async () => {
-  const url = window.location.href;
-  const token = url.split("/").slice(-1)[0];
+const requestGetUserByToken = async (token) => {
 
   try {
     const response = await fetch(

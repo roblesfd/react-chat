@@ -13,7 +13,7 @@ type ModalContextType = {
 const ModalContext = createContext<ModalContextType>({
   modal: {
     isOpen: false,
-    content: "",
+    content: null,
   },
   setModal: () => false,
 });

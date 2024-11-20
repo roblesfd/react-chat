@@ -5,14 +5,17 @@ import App from "./App";
 import ModalProvider from "./context/ModalProvider";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import UserProvider from "./context/UserProvider";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <ModalProvider>
-        <Toaster />
-        <App />
-      </ModalProvider>
+      <UserProvider>
+        <ModalProvider>
+            <Toaster />
+            <App />
+          </ModalProvider>
+      </UserProvider>
     </BrowserRouter>
   </StrictMode>
 );

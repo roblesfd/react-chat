@@ -17,7 +17,7 @@ const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <ModalContext.Provider value={{ modal, setModal }}>
-      <Modal />
+      <Modal width={"400px"}/>
       {children}
     </ModalContext.Provider>
   );

@@ -46,7 +46,7 @@ const onLogin = async (values: LoginFormProps) => {
 
     if (response.ok) {
       if (typeof window !== "undefined") {
-        sessionStorage.setItem("jwt", JSON.stringify(data));
+        sessionStorage.setItem("jwt", JSON.stringify(data.accessToken));
       }
       toast.success("Has iniciado sesión");
       setTimeout(() => {
