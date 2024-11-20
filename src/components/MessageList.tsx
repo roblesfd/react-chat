@@ -17,7 +17,7 @@ const MessageList: React.FC<MessageListProps> = ({
   return (
     <div
       data-testid="message-list"
-      className={`overflow-y-scroll h-full space-y-1 md:space-y-3 px-3`}
+      className={`overflow-y-scroll h-fit space-y-1 md:space-y-3 px-3`}
     >
       {messageList.map((message, key) => (
         <MessageItem

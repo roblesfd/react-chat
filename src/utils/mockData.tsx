@@ -27,9 +27,7 @@ const mockMessageList: MessageProps[] = [
   {
     id: uuid(),
     type: "recipient",
-    content:
-      "Este es el cuerpo del mensaje khhk  ksdhfk sdkjhsdkjshdfkjshdfkjhsfdkjshdfkjshdfkjshdfkjsdhfkjsdhfkjshdfkjshdfkjshdf dsfhjksdfhjksd fksjdfh ksjdfskdjf hskjdfh skdjf sdkjfhsd kfjhs fksdfhskjd fskdjfh sdfk sdkfjh skdfhsdfk",
-    avatar: "",
+    content: "Este es el cuerpo del mensaje khhk  ksdhfk sdkjhsdkjshdfkjshdfkjhsfdkjshdfkjshdfkjshdfkjsdhfkjsdhfkjshdfkjshdfkjshdf dsfhjksdfhjksd fksjdfh ksjdfskdjf hskjdfh skdjf sdkjfhsd kfjhs fksdfhskjd fskdjfh sdfk sdkfjh skdfhsdfk",
     author: {
       username: "Nombre del autor",
     },
@@ -45,7 +43,6 @@ const mockMessageList: MessageProps[] = [
     type: "sender",
     content:
       " Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, rem?",
-    avatar: "",
     author: {
       username: "Nombre del autor",
     },
@@ -62,7 +59,6 @@ const emptyMessage: MessageProps = {
   id:uuid(),
   type: "sender",
   content: "",
-  avatar: "",
   author: {
     username: "",
   },
@@ -78,7 +74,6 @@ const dataMessage: MessageProps = {
   id: "100",
   type: "sender",
   content: "Cuerpo del mensaje",
-  avatar: "",
   author: {
     username: "Juanson",
   },

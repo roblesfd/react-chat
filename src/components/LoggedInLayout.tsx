@@ -23,36 +23,36 @@ const LoggedInLayout = () => {
         </AccountDataContainer>
 
     return (
-<div data-testid="logged-in-layout">
-    <NavBar title="React Chat" position="static">
-        <ul className="flex flex-col md:flex-row justify-between items-center gap-2 text-secondary-40">
-            <li
-                className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer text-center"
+    <div data-testid="logged-in-layout">
+        <NavBar title="React Chat" position="static">
+            <ul className="flex flex-col md:flex-row justify-between items-center gap-2 text-secondary-40">
+                <li
+                    className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer text-center"
+                    onClick={() => {
+                        setModal({
+                            isOpen:true,
+                            content:modalContent
+                        });
+                    }}>
+                    Mi cuenta
+                </li>
+                <li
+                className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer  text-center"
                 onClick={() => {
-                    setModal({
-                        isOpen:true,
-                        content:modalContent
-                    });
+                    sessionStorage.removeItem("jwt");
+                    toast.loading("Cerrando sesión...")
+                    setTimeout(() =>{
+                        window.location.href = "/ingresar"
+                    }, 2000)
                 }}>
-                Mi cuenta
-            </li>
-            <li
-             className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer  text-center"
-             onClick={() => {
-                sessionStorage.removeItem("jwt");
-                toast.loading("Cerrando sesión...")
-                setTimeout(() =>{
-                    window.location.href = "/ingresar"
-                }, 2000)
-            }}>
-                Cerrar sesión
-            </li>
-        </ul>
-    </NavBar>
-    <div className="h-auto text-quatertiary-100 px-2 md:px-16">
-        <Outlet />
+                    Cerrar sesión
+                </li>
+            </ul>
+        </NavBar>
+        <div className="h-auto text-quatertiary-100 px-2 md:px-16">
+            <Outlet />
+        </div>
     </div>
-</div>
     )
 }
 

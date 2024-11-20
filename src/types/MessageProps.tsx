@@ -2,7 +2,6 @@ export type MessageProps = {
   id: string;
   type: "recipient" | "sender";
   content: string;
-  avatar: string;
   author: {
     username: string;
   };

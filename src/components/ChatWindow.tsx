@@ -20,6 +20,8 @@ const ChatWindow = () => {
   const [isReplyMessageVisible, setIsReplyMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState<"edit" | "new"  | "reply">("new");
   const {user} = useContext(UserContext);
+  
+  const dummy = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fecthUsers = async () => {
@@ -32,13 +34,11 @@ const ChatWindow = () => {
   useEffect(() => {
     // Se utiliza para poder mostrar el mensaje nuevo en la seccion de mensajes
     // haciendo scroll a su ubicacion
-    if (dummy instanceof HTMLDivElement) {
-      dummy.scrollIntoView({ behavior: "smooth" });
+    if (dummy.current) {
+      dummy.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messageList]);
 
-
-  const dummy = useRef<HTMLDivElement | null>(null);
 
   const handleShowEditMessage = (messageId: string) => {
     const editMsg = messageList.find((msg) => msg.id === messageId);
