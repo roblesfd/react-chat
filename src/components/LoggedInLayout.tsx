@@ -13,7 +13,7 @@ const LoggedInLayout = () => {
     const {user} = useContext(UserContext);
 
     const modalContent = 
-    <div className="grid grid-cols-8 gap-x-4 gap-y-3">
+    <div className="grid grid-cols-8 gap-x-4 gap-y-3 ">
         <div className="col-span-8 mb-2">
             <h3 className="font-semibold text-lg">Datos de la cuenta</h3>
         </div>
@@ -45,10 +45,10 @@ const LoggedInLayout = () => {
 
     return (
 <div data-testid="logged-in-layout">
-    <NavBar title="React Chat" bgColor="primary-500">
-        <ul className="flex justify-between items-center gap-2">
+    <NavBar title="React Chat" position="static">
+        <ul className="flex flex-col md:flex-row justify-between items-center gap-2 text-secondary-40">
         <li
-             className="hover:bg-primary-200 rounded-md px-3 py-2 cursor-pointer"
+             className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer text-center"
              onClick={() => {
                 setModal({
                     isOpen:true,
@@ -58,7 +58,7 @@ const LoggedInLayout = () => {
                 Mi cuenta
             </li>
             <li
-             className="hover:bg-primary-200 rounded-md px-3 py-2 cursor-pointer"
+             className="hover:bg-secondary-200 rounded-md px-3 py-2 cursor-pointer  text-center"
              onClick={() => {
                 sessionStorage.removeItem("jwt");
                 toast.loading("Cerrando sesión...")
@@ -70,7 +70,9 @@ const LoggedInLayout = () => {
             </li>
         </ul>
     </NavBar>
-    <Outlet />
+    <div className="bg-primary-500 h-auto text-quatertiary-100 px-2 md:px-16">
+        <Outlet />
+    </div>
 </div>
     )
 }

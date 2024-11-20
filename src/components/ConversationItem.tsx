@@ -1,4 +1,4 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faUser, faUserLock, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { dropdownData } from "../utils/mockData";
@@ -8,6 +8,39 @@ export type ConversationItemProps = {
   data: UserProps;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
+
+const dropdownInfo = {
+  ...dropdownData,
+  options:[
+    <div className="w-full">
+    <button
+      onClick={() => console.log("Silenciar")}
+      className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
+    >
+      <span>Silenciar</span>
+      <FontAwesomeIcon icon={faVolumeMute} className="text-md" />
+    </button>
+  </div>,
+  <div className="w-full">
+      <button
+        onClick={() => console.log("Eliminar")}
+        className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
+      >
+        <span>Eliminar chat</span>
+        <FontAwesomeIcon icon={faTrash} className="text-md" />
+      </button>
+    </div>,
+          <div className="w-full">
+          <button
+            onClick={() => console.log("Eliminar")}
+            className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
+          >
+            <span>Bloquear usuario</span>
+            <FontAwesomeIcon icon={faUserLock} className="text-md" />
+          </button>
+      </div>,
+  ]
+}
 
 const ConversationItem: React.FC<ConversationItemProps> = ({
   data,
@@ -28,7 +61,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
         <p className="text-[12px]">Mensaje...</p>
       </div>
       <div className="col-span-2">
-        <Dropdown {...dropdownData} />
+        <Dropdown {...dropdownInfo} />
       </div>
     </div>
   );

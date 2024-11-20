@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { dropdownMessageData } from "../utils/mockData";
+import { dropdownData } from "../utils/mockData";
 import Dropdown from "./Dropdown";
 import { faClose, faEdit, faReply } from "@fortawesome/free-solid-svg-icons";
 import { MessageProps } from "../types/MessageProps";
@@ -20,8 +20,8 @@ const MessageItem: React.FC<MessageItemProps> = ({
 }) => {
   const { id, type, content, createdAt, isEdited, isReply, messageToReply } = message;
 
-  const dropdownData = {
-    ...dropdownMessageData,
+  const dropdownInfo = {
+    ...dropdownData,
     options: [
       <div className="w-full">
         <button
@@ -73,7 +73,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
             {/* fecha de envio */}
             <p className="text-xs">{createdAt}</p>
           </div>
-          <div>{type === "sender" && <Dropdown {...dropdownData} />}</div>
+          <div>{type === "sender" && <Dropdown {...dropdownInfo} />}</div>
         </div>
         {/* contenido de texto */}
         <div className="mt-2 text-[15px] text-">

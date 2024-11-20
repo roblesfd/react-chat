@@ -1,7 +1,7 @@
 import {faUser, faUserLock, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
-import {dropdownMessageData } from "../utils/mockData";
+import {dropdownData } from "../utils/mockData";
 import { UserProps } from "../types/UserProps";
 
 export type UserItemProps = {
@@ -9,8 +9,8 @@ export type UserItemProps = {
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
-const dropdownData = {
-  ...dropdownMessageData,
+const dropdownInfo = {
+  ...dropdownData,
   options: [
     <div className="w-full">
       <button
@@ -53,7 +53,7 @@ const UserItem: React.FC<UserItemProps> = ({
         <p className="text-[12px]"></p>
       </div>
       <div className="col-span-2">
-        <Dropdown {...dropdownData} />
+        <Dropdown {...dropdownInfo} />
       </div>
     </div>
   );

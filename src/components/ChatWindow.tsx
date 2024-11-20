@@ -100,7 +100,7 @@ const ChatWindow = () => {
   return (
     <div
       data-testid="chat-window"
-      className="h-[590px] w-[900px] grid grid-cols-12 my-16 mx-auto"
+      className="h-fit md:min-h-screen w-fit md:w-[900px] grid grid-cols-12 py-3 md:py-16 mx-auto"
     >
       <section className="col-span-12 md:col-span-9 bg-primary-40 sm:rounded-md md:rounded-none md:rounded-l-md">
         <div className=" text-primary-600">
@@ -116,7 +116,7 @@ const ChatWindow = () => {
               />
               :
               <div className="h-full flex flex-col justify-center items-center">
-                <p className="text-primary-800 text-center mt-6">Envía un mensaje...</p>
+                <p className="text-primary-800 text-center mt-6">Selecciona una conversación...</p>
               </div>
               }
           <div ref={dummy} />

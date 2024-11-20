@@ -6,11 +6,11 @@ import { ReactNode, useState } from 'react';
 //{title, bgColor, children, searchBar=null}
 type NavbarProps = {
   title:string;
-  bgColor:string;
   children: ReactNode;
   searchBar?: ReactNode | null;
+  position?: "static" | "relative" | "absolute" | "fixed" | "sticky";
 }
-const NavBar: React.FC<NavbarProps> = ({title, bgColor, children, searchBar=null}) => {
+const NavBar: React.FC<NavbarProps> = ({title, children, searchBar=null, position="static"}) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleToggleMenu = () => {
@@ -18,11 +18,10 @@ const NavBar: React.FC<NavbarProps> = ({title, bgColor, children, searchBar=null
   };
 
   return (
-    <nav className={`bg-${bgColor} p-4`}>
+    <nav style={{position:position, top: "1px"}} className={`bg-secondary-400 p-4`}>
       <div className="container min-w-full flex justify-between items-center">
         {/* Logo o Título */}
         <div className="text-white text-xl font-bold">{title}</div>
-
         {/* Boton de Menú en dispositivos móviles */}
         <div className="md:hidden">
           <button
@@ -45,7 +44,7 @@ const NavBar: React.FC<NavbarProps> = ({title, bgColor, children, searchBar=null
             </div>
         }
         {/* Menú en dispositivos grandes */}
-        <div className="sm:hidden md:block space-x-4">
+        <div className="hidden md:flex space-x-4">
             {children}
         </div>
       </div>

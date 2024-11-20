@@ -1,34 +1,17 @@
-import { faEllipsis, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MessageProps } from "../types/MessageProps";
 import {v4 as uuid} from "uuid";
 
 const dropdownData = {
   button: (
-    <button className="w-full text-primary-30  hover:text-primary-600 dark:hover:text-primary-30 hover:bg-primary-100 dark:hover:bg-primary-200 px-2 py-1 rounded-md ">
-      <FontAwesomeIcon icon={faEllipsis} />
-    </button>
-  ),
-  options: [
-    <div>
-      <button className={`flex items-center justify-between gap-2`}>
-        Silenciar
-      </button>
-      <FontAwesomeIcon icon={faVolumeMute} className="text-md" />
-    </div>,
-  ],
-};
-
-
-
-const dropdownMessageData = {
-  button: (
-    <button className="w-full text-primary-30  hover:text-primary-600 dark:hover:text-primary-30  px-2 py-1 rounded-md ">
+    <button className="w-full text-primary-30 hover:bg-primary-100 px-2 py-1 rounded-md ">
       <FontAwesomeIcon icon={faEllipsis} />
     </button>
   ),
   options: [],
 };
+
 
 const mensajes = [
   "Hola, ¿cómo estás?",
@@ -111,7 +94,6 @@ export {
   dropdownData,
   mensajes,
   mockMessageList,
-  dropdownMessageData,
   emptyMessage,
   dataMessage,
 };

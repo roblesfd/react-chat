@@ -13,7 +13,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   return (
     <div data-testid="conversation-list">
       <h3 className="mb-4">Conversaciones</h3>
-      <div className={`overflow-y-scroll h-[${height}px] space-y-3 text-center`}>
+      <div style={{height: `${height}px`}} className={`overflow-y-scroll space-y-3 text-center`}>
         {data.length ? (
           data.map((conversation, key) => (
             <ConversationItem key={key} data={conversation} />
