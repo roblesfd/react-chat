@@ -14,13 +14,12 @@ interface IMessage {
   isEdited: boolean;
 }
 
-
 const MessageSchema: Schema<IMessage> = new mongoose.Schema(
   {
     type: { type: String, required: true, default: "sender" },
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref:"User", required: true },
-    conversation: {type: Schema.Types.ObjectId, ref:"Conversation"},
+    conversation: {type: Schema.Types.ObjectId, ref:"Conversation", required: true },
     reactions: [{type: String}],
     isReply: {type: Boolean, default:false},
     replyOfMessage:{type:String},

@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import Message from "../models/Message";
 
 // @desc Crear un nuevo mensaje
-// @route POST /mensajes/
+// @route POST /mensajes
 // @access Private
 const createMessage = async (req: Request, res: Response) => {
   try {
-    const { conversationId, senderId, content } = req.body;
-    const message = await Message.create({ conversationId, senderId, content });
+    const { conversation, author, content } = req.body;
+    const message = await Message.create({ conversation, author, content });
     res.status(201).json(message);
   } catch (error) {
     console.error(error);

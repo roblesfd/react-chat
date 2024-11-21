@@ -11,6 +11,7 @@ import { UserProps } from "../types/UserProps";
 import UserList from "./UserList";
 import UserContext from "../context/UserContext";
 import { MessageProps } from "../types/MessageProps";
+import { useSocket } from "../hooks/useSocket";
 
 const ChatWindow = () => {
   const [focusedMessage, setFocusedMessage] = useState<MessageProps>(emptyMessage);
@@ -20,13 +21,21 @@ const ChatWindow = () => {
   const [isReplyMessageVisible, setIsReplyMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState<"edit" | "new"  | "reply">("new");
   const {user} = useContext(UserContext);
-  
+  const {conversation, socket} = useSocket();
   const dummy = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (conversation) {
+      setMessageList([...conversation.messages])
+    }
+  }, [conversation]);
 
   useEffect(() => {
     const fecthUsers = async () => {
       const users = await getAllUsers();
-      setUserList(users.filter(usuario => usuario["_id"] !== user.id));
+      if(users) {
+        setUserList(users.filter((usuario) => usuario["_id"] !== user.id));
+      }
     }
     fecthUsers();
   },[user]);
@@ -71,7 +80,14 @@ const ChatWindow = () => {
   const handleSaveNewMessage = (message: MessageProps | null) => {
     if(message){
       setMessageList([...messageList, message]);
-      setFocusedMessage(emptyMessage);
+      setFocusedMessage(emptyMessage);   
+      if(socket && conversation) {
+        socket.emit("sendMessage", {
+          conversationId: conversation["_id"], 
+          senderId: user.id, 
+          content: message.content,
+        });
+      }
     }
   };
 
@@ -135,11 +151,13 @@ const ChatWindow = () => {
             message={focusedMessage as MessageProps}
           />
         )}
-        <MessageInput
-          handleSendMessage={handleSendMessage}
-          messageType={messageType}
-          message={focusedMessage}
-        />
+        {conversation && (
+          <MessageInput
+            handleSendMessage={handleSendMessage}
+            messageType={messageType}
+            message={focusedMessage}
+          /> 
+        )}
       </section>
       <section className="hidden md:block md:col-span-3 bg-primary-400 rounded-r-md p-2 md:p-3 divide-y space-y-10">
         <ConversationList height={250} data={userList} />

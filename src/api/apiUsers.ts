@@ -41,9 +41,9 @@ const getAllUsers = async () => {
   }
 };
 
-const getUser = async () => {
+const getUser = async (id: string) => {
   try {
-    const response = await fetch(process.env.BACKEND_URL + "/usuarios", {
+    const response = await fetch(process.env.BACKEND_URL + "/usuarios/" + id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -1,11 +1,12 @@
 import { Server, Socket } from "socket.io";
-import Message from "../models/Message";
 import Conversation from "../models/Conversation";
+import Message from "../models/Message";
 
 interface MessagePayLoad {
     conversationId: string;
     senderId: string;
     content: string;
+    messages: []
 }
 
 interface StartConversationPayload {
@@ -22,6 +23,11 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
         try {
           let conversation = await Conversation.findOne({
             participants: { $all: [senderId, receiverId] },
+          }).populate({
+            path:"messages",
+            populate: {
+              path:"author"
+            }
           });
     
           if (!conversation) {
@@ -47,24 +53,30 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
 
     socket.on("join", (userId:string) => {
         connectedUsers.set(userId, socket.id);
-        console.log(`Usuario ${userId} conectado con socket ${socket.id}`)
+        console.log(`Usuario ${userId} con socket ${socket.id} se ha unido`)
     });
 
-    socket.on("sendMessage", async(payload: MessagePayLoad) => {
-        const {conversationId, senderId, content} = payload;
-
-        const newMessage = await Message.create({
-            conversationId,
-            senderId,
-            content
+    socket.on("sendMessage", async (payload: MessagePayLoad) => {
+      const { conversationId, senderId, content } = payload;
+      try {
+        const message = await Message.create({
+            conversation: conversationId,
+            author: senderId,
+            content,
+          });
+        const conversation = await Conversation.findByIdAndUpdate(
+          conversationId, 
+          { $push: { messages: message._id } }, 
+          { new: true } 
+        ).populate({
+          path: "messages",
+          populate: { path: "author" },
         });
-
-        io.to(conversationId).emit("newMessage", newMessage);
-    });
-
-    socket.on("joinConversation", (conversationId: string) => {
-        socket.join(conversationId);
-        console.log(`Socket ${socket.id} se unió a la conversación ${conversationId}`);
+    
+      } catch (error) {
+        console.error("Error en sendMessage:", error);
+        socket.emit("error", { message: "Error al enviar el mensaje." });
+      }
     });
 
     socket.on("disconnect", () => {

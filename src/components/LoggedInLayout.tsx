@@ -14,13 +14,14 @@ const LoggedInLayout = () => {
     const {setModal} = useContext(ModalContext);
     const {user} = useContext(UserContext);
 
-    const modalContent = 
+    const modalContent = user ?
         <AccountDataContainer title="Datos de la cuenta">
             <AccountDataRow label="Nombre" value={user.name} />
             <AccountDataRow label="Apellido" value={user.lastname} />
             <AccountDataRow label="Usuario" value={user.username} />
             <AccountDataRow label="Correo electrónico" value={user.email} />
         </AccountDataContainer>
+        : null
 
     return (
     <div data-testid="logged-in-layout">

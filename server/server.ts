@@ -15,6 +15,10 @@ import { logger, logEvents } from "./middleware/logger";
 import errorHandler from "./middleware/errorHandler";
 import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
+import conversationRoutes from "./routes/conversationRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
+import messageRoutes from "./routes/messageRoutes";
+
 import { setupChatSocket } from "./sockets/chatSocket";
 
 dotenv.config();
@@ -43,24 +47,19 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`Usuario conectado ${socket.id}`);
+  console.log(`Socket ${socket.id} conectado`);
 
-  socket.on("register", (userId: string) => {
+  socket.on("registerUser", (userId: string) => {
     socket.data.userId = userId;
     console.log(`Usuario ${userId} conectado en el socket ${socket.id}`);
-    console.log("Socket data", socket.data)
   });
 
   setupChatSocket(io, socket);
 
   socket.on("disconnect", () => {
-    console.log(`Usuario desconectado: ${socket.id}`);
+    console.log(`Socket ${socket.id} desconectado`);
   });
-
-
 });
-
-
 
 server.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
@@ -69,6 +68,10 @@ server.listen(PORT, () => {
 // Rutas
 app.use("/usuarios", userRoutes);
 app.use("/auth", authRoutes);
+app.use("/conversaciones", conversationRoutes);
+app.use("/notificaciones", notificationRoutes);
+app.use("/mensajes", messageRoutes);
+
 
 // Manejo de rutas no encontradas (404)
 app.all("/*", (req: Request, res: Response) => {
