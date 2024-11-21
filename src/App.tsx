@@ -9,10 +9,12 @@ import LoggedInLayout from "./components/LoggedInLayout";
 import { requestGetUserByToken } from "./api/apiUsers";
 import {useEffect, useContext } from "react";
 import UserContext from "./context/UserContext";
+import {decodedEmpty } from "./utils/mockData";
 
 function App() {
   const {setUser} = useContext(UserContext);
   const token : string = sessionStorage.getItem("jwt")  ? JSON.parse(sessionStorage.getItem("jwt") as string) : "";
+  const decodedUser = token ?  jwtDecode(token) as typeof decodedEmpty : decodedEmpty;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -23,22 +25,11 @@ function App() {
     };
     fetchUser();
   }, [token]); 
-
-  let decoded = {
-    UserInfo: {
-      username: "",
-      role: "",
-      id: "",
-    },
-  };
-
-  if (token) {
-    decoded = jwtDecode(token);
-  }
+ 
   return (
     <Routes>
       <Route element={<MainLayout />}>
-      <Route element={<ProtectedRouteClient id={decoded.UserInfo.id} />}>
+      <Route element={<ProtectedRouteClient id={decodedUser.UserInfo.id} />}>
           <Route element={<LoggedInLayout />}>
             <Route index element={<ChatView />} />
           </Route>

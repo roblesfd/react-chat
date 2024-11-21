@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { Children, isValidElement, ReactNode } from "react";
-import { filterChildrenByName } from "../../utils/dataFormatFunctions";
+import { filterChildrenByName } from "../../utils/dataFormat";
 
 const generateInitialValues = (
   inputList: ReactNode[]

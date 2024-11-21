@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import "express-async-errors";
 import express, { Request, Response } from "express";
+import http from "http";
+import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -13,10 +15,12 @@ import { logger, logEvents } from "./middleware/logger";
 import errorHandler from "./middleware/errorHandler";
 import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
+import { setupChatSocket } from "./sockets/chatSocket";
 
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 3500;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +34,37 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "public")));
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PATCH", "DELETE"]
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log(`Usuario conectado ${socket.id}`);
+
+  socket.on("register", (userId: string) => {
+    socket.data.userId = userId;
+    console.log(`Usuario ${userId} conectado en el socket ${socket.id}`);
+    console.log("Socket data", socket.data)
+  });
+
+  setupChatSocket(io, socket);
+
+  socket.on("disconnect", () => {
+    console.log(`Usuario desconectado: ${socket.id}`);
+  });
+
+
+});
+
+
+
+server.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
 
 // Rutas
 app.use("/usuarios", userRoutes);
@@ -53,9 +88,6 @@ app.use(errorHandler);
 // Conexión a MongoDB y escucha en el puerto
 mongoose.connection.once("open", () => {
   console.log("Conectado a MongoDB");
-  app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-  });
 });
 
 mongoose.connection.on("error", (err: any) => {

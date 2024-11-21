@@ -6,7 +6,7 @@ import Conversation from "../models/Conversation";
 // @access Private
 const createConversation = async (req: Request, res: Response) => {
   try {
-    const { participants } = req.body; // Lista de usuarios en la conversación
+    const { participants } = req.body;
     const conversation = await Conversation.create({ participants });
     res.status(201).json(conversation);
   } catch (error) {

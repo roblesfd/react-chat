@@ -1,49 +1,65 @@
 import {faUser, faUserLock, faUserPlus, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
-import {dropdownData } from "../utils/mockData";
+import { dropdownData } from "../utils/mockData";
 import { UserProps } from "../types/UserProps";
-import { capitalizeString } from "../utils/misc";
+import { capitalizeString, getDecodedUser } from "../utils/misc";
+import { useSocket } from "../hooks/useSocket";
+
+const decodedUser = getDecodedUser();
+
 
 export type UserItemProps = {
   data: UserProps;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
-const optionList = [
-  {
-    title: "Agregar",
-    onClick: () => console.log("Agregar!!!"),
-    icon: faUserPlus as IconDefinition
-  },
-  {
-    title: "Bloquear",
-    onClick: () => console.log("Bloquear!!!"),
-    icon: faUserLock as IconDefinition
-  },
-]
-
-const dropdownInfo = {
-  ...dropdownData,
-  options: [ ...optionList.map(option => (
-    <div className="w-full">
-      <button
-        onClick={option.onClick}
-        className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
-      >
-        <span>{option.title}</span>
-        <FontAwesomeIcon icon={option.icon} className="text-md" />
-      </button>
-    </div>
-  ))
-  ],
-};
 
 const UserItem: React.FC<UserItemProps> = ({
   data,
   onClick = () => {},
 }) => {
   const { name, lastname } = data;
+  const {socket} = useSocket();
+
+  const handleStartConversation = () => {
+    if (socket) {
+      socket.emit("startConversation", {
+        senderId: decodedUser.UserInfo.id, //id del usuario con el que se quiere iniciar conversacion
+        receiverId: data["_id"],
+      });
+    }
+  }
+
+  const optionList = [
+    {
+      title: "Iniciar conversación",
+      onClick: () => handleStartConversation(),
+      icon: faUserPlus as IconDefinition
+    },
+    {
+      title: "Bloquear",
+      onClick: () => console.log("Bloquear!!!"),
+      icon: faUserLock as IconDefinition
+    },
+  ]
+  
+  const dropdownInfo = {
+    ...dropdownData,
+    options: [ ...optionList.map(option => (
+      <div className="w-full">
+        <button
+          onClick={option.onClick}
+          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
+        >
+          <span>{option.title}</span>
+          <FontAwesomeIcon icon={option.icon} className="text-md" />
+        </button>
+      </div>
+    ))
+    ],
+  };
+
   return (
     <div
       data-testid="conversation-item"

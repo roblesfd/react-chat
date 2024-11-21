@@ -1,6 +1,7 @@
 import { UserProps } from "../types/UserProps";
 import UserItem from "./UserItem";
 
+
 type UserListProps = {
   height: number;
   data: UserProps[];

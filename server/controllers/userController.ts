@@ -110,7 +110,6 @@ const getUserByToken = async (req: Request, res: Response): Promise<void> => {
     const { token } = req.params;
     const user = await User.findOne({ token }).select("-password").exec();
     if (user) {
-      console.log(user);
       res.status(200).json(user);
     } else {
       res.status(400).json({ message: "Usuario no encontrado" });

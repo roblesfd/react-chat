@@ -85,10 +85,20 @@ const dataMessage: MessageProps = {
   isEdited: false,
 };
 
+const decodedEmpty = {
+  UserInfo: {
+    username: "",
+    role: "",
+    id: "",
+  },
+};
+
+
 export {
   dropdownData,
   mensajes,
   mockMessageList,
   emptyMessage,
   dataMessage,
+  decodedEmpty
 };

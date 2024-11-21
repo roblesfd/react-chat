@@ -11,8 +11,8 @@ interface IConversation {
 const ConversationSchema : Schema<IConversation> = new mongoose.Schema(
     {
         participants: [{ type: Schema.Types.ObjectId, ref:"User", required: true}],
-        lastMessageId: { type: Schema.Types.ObjectId, ref:"Message", required: true},
-        messages: [{ type: Schema.Types.ObjectId, ref:"Message", required: true}],
+        lastMessageId: { type: Schema.Types.ObjectId, ref:"Message"},
+        messages: [{ type: Schema.Types.ObjectId, ref:"Message", default:[]}],
     },
     {
         timestamps: true,
