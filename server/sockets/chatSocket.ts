@@ -1,6 +1,9 @@
 import { Server, Socket } from "socket.io";
 import Conversation from "../models/Conversation";
 import Message from "../models/Message";
+import {UserProps} from "../../src/types/UserProps"
+import {UserState} from "../../src/context/UserContext"
+import { ConversationProps } from "../../src/types/ConversationProps";
 
 interface MessagePayLoad {
     conversationId: string;
@@ -50,7 +53,7 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
           console.error("Error al iniciar conversación:", error);
         }
       });
-
+  
     socket.on("join", (userId:string) => {
         connectedUsers.set(userId, socket.id);
         console.log(`Usuario ${userId} con socket ${socket.id} se ha unido`)
@@ -79,6 +82,28 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
       }
     });
 
+    socket.on("getUserConversations", async(userId:string) => {
+      console.log("Get conversations", userId);
+      try {
+        const conversations = await Conversation.find({
+          participants: { $all: [userId] },
+        }).populate({
+          path:"messages",
+          populate: {
+            path:"author"
+          },
+        }).populate({
+          path:"participants",
+        });
+        if(conversations) {
+          socket.emit("sendUserConversations", conversations)
+        }
+
+      } catch (error) {
+        console.error("Error al iniciar conversación:", error);
+      }
+    })
+
     socket.on("disconnect", () => {
         for(const [userId, socketId] of connectedUsers.entries()){
             if (socketId === socket.id) {
@@ -87,4 +112,14 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
             }
         }
     })
+}
+
+//Funciones de chat socket
+export const handleStartConversation = (senderId:string, receiverId:string, socket:any) => {
+  if (socket) {
+    socket.emit("startConversation", {
+      senderId: senderId,
+      receiverId:receiverId,
+    });
+  }
 }

@@ -12,6 +12,7 @@ import UserList from "./UserList";
 import UserContext from "../context/UserContext";
 import { MessageProps } from "../types/MessageProps";
 import { useSocket } from "../hooks/useSocket";
+import { capitalizeString, filterUser } from "../utils/misc";
 
 const ChatWindow = () => {
   const [focusedMessage, setFocusedMessage] = useState<MessageProps>(emptyMessage);
@@ -20,25 +21,46 @@ const ChatWindow = () => {
   const [isEditMessageVisible, setIsEditMessageVisible] = useState(false);
   const [isReplyMessageVisible, setIsReplyMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState<"edit" | "new"  | "reply">("new");
+  const [receiver, setReceiver] = useState<UserProps>();
   const {user} = useContext(UserContext);
-  const {conversation, socket} = useSocket();
+  const {conversation, conversationList, socket} = useSocket();
   const dummy = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (conversation) {
-      setMessageList([...conversation.messages])
+      setMessageList([...conversation.messages]);
+      const currentConversation = conversationList.find((conv) => conversation["_id"] === conv["_id"]);
+      const userReceiver = currentConversation ? currentConversation.participants[1] : "";
+      setReceiver(userReceiver);
     }
-  }, [conversation]);
+  }, [conversation, conversationList]);
 
   useEffect(() => {
-    const fecthUsers = async () => {
+    const fetchAndFilterUsers = async () => {
       const users = await getAllUsers();
-      if(users) {
-        setUserList(users.filter((usuario) => usuario["_id"] !== user.id));
+  
+      if (users) {
+        const partList = conversationList
+          .map((conversation) => conversation.participants)
+          .flat()
+          .filter((participant) => participant["_id"] !== user.id);
+    
+        const filteredUsers = users
+          .filter((usuario) => usuario["_id"] !== user.id) // Excluye al usuario actual
+          .filter(
+            (usuario) =>
+              !partList.some(
+                (participant) => participant["_id"] === usuario["_id"]
+              )
+          );
+  
+        setUserList(filteredUsers);
       }
-    }
-    fecthUsers();
-  },[user]);
+    };
+  
+    fetchAndFilterUsers();
+  }, [user, conversationList]); 
+  
 
   useEffect(() => {
     // Se utiliza para poder mostrar el mensaje nuevo en la seccion de mensajes
@@ -120,7 +142,11 @@ const ChatWindow = () => {
     >
       <section className="col-span-12 md:col-span-9 bg-primary-40 sm:rounded-md md:rounded-none md:rounded-l-md">
         <div className=" text-primary-600">
-          <ChatHeader name="Nombre del usuario" />
+          {conversation && receiver && <ChatHeader name={
+            `${capitalizeString(receiver.name)} 
+             ${capitalizeString(receiver.lastname)} 
+            `} /> 
+          }
         </div>
         <div className="h-[500px] bg-white rounded-md overflow-y-scroll">
               {messageList.length > 0 ?           
@@ -160,7 +186,7 @@ const ChatWindow = () => {
         )}
       </section>
       <section className="hidden md:block md:col-span-3 bg-primary-400 rounded-r-md p-2 md:p-3 divide-y space-y-10">
-        <ConversationList height={250} data={userList} />
+        <ConversationList height={250} data={conversationList} />
         <UserList height={250} data={userList} />
       </section>
     </div>

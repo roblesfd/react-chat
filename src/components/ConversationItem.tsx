@@ -2,12 +2,14 @@ import {faUser, faVolumeMute, IconDefinition } from "@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { dropdownData } from "../utils/mockData";
-import { UserProps } from "../types/UserProps";
-import { capitalizeString } from "../utils/misc";
+import { capitalizeString, shortenString } from "../utils/misc";
+import { ConversationProps } from "../types/ConversationProps";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 
 export type ConversationItemProps = {
-  data: UserProps;
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  data: ConversationProps;
+  onClick?: (...args: unknown[]) => void;
 };
 
 const optionList = [
@@ -37,12 +39,15 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   data,
   onClick = () => {},
 }) => {
-  const { name, lastname } = data;
+  const {user} = useContext(UserContext)
+  const participant = data.participants.filter(participant => participant.id !== user.id)
+  const {messages} = data;
+  const { name, lastname } = participant[0];
 
   return (
     <div
       data-testid="conversation-item"
-      onClick={(e) => onClick(e)}
+      onClick={onClick}
       className="bg-primary-200 grid grid-cols-10 gap-3 max-h-18 rounded-md p-1 hover:cursor-pointer"
     >
       <div className="col-span-2 my-auto flex items-center justify-center  rounded-full h-11 w-11 p-2 ml-2 bg-secondary-200">
@@ -50,7 +55,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
       </div>
       <div className="col-span-6 block">
         <h5 className="text-[14px] mb-1 font-semibold">{`${capitalizeString(name)} ${capitalizeString(lastname)}`}</h5>
-        <p className="text-[12px]">Mensaje...</p>
+        <p className="text-[12px]">{shortenString(messages[messages.length-1].content)}...</p>
       </div>
       <div className="col-span-2">
         <Dropdown {...dropdownInfo} />

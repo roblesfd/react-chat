@@ -5,7 +5,8 @@ import { ConversationProps } from "../types/ConversationProps";
 export interface SocketContextProps {
   socket: Socket | null;
   isConnected: boolean;
-  conversation: ConversationProps | null
+  conversation: ConversationProps | null;
+  conversationList: ConversationProps[] | []
 }
 
 export const SocketContext = createContext<SocketContextProps | undefined>(undefined);

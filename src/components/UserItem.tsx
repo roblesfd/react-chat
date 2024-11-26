@@ -3,38 +3,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { dropdownData } from "../utils/mockData";
 import { UserProps } from "../types/UserProps";
-import { capitalizeString, getDecodedUser } from "../utils/misc";
+import { capitalizeString } from "../utils/misc";
 import { useSocket } from "../hooks/useSocket";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
+import {handleStartConversation} from "../../server/sockets/chatSocket"
 
-const decodedUser = getDecodedUser();
 
 
 export type UserItemProps = {
   data: UserProps;
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 
 const UserItem: React.FC<UserItemProps> = ({
   data,
-  onClick = () => {},
 }) => {
   const { name, lastname } = data;
   const {socket} = useSocket();
+  const {user} = useContext(UserContext)
 
-  const handleStartConversation = () => {
-    if (socket) {
-      socket.emit("startConversation", {
-        senderId: decodedUser.UserInfo.id, //id del usuario con el que se quiere iniciar conversacion
-        receiverId: data["_id"],
-      });
-    }
-  }
 
   const optionList = [
     {
       title: "Iniciar conversación",
-      onClick: () => handleStartConversation(),
+      onClick: () => handleStartConversation(data["_id"], user.id, socket),
       icon: faUserPlus as IconDefinition
     },
     {
@@ -63,7 +56,6 @@ const UserItem: React.FC<UserItemProps> = ({
   return (
     <div
       data-testid="conversation-item"
-      onClick={(e) => onClick(e)}
       className="bg-primary-200 grid grid-cols-10 gap-2 max-h-18 rounded-md p-1 hover:cursor-pointer"
     >
       <div className="col-span-2 my-auto flex items-center justify-center  rounded-full h-11 w-11 p-2 ml-2 bg-secondary-200">

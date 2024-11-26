@@ -16,7 +16,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   }) => {
     const [socket, setSocket] = useState<Socket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
-    const [conversation, setConversation] = useState<ConversationProps | null>(null)
+    const [conversation, setConversation] = useState<ConversationProps | null>(null);
+    const [conversationList, setConversationList] = useState<ConversationProps[]>([]);
+
+    useEffect(() => {
+      
+    });
   
     useEffect(() => {
       const newSocket = io(serverUrl, { query: { userId } });
@@ -26,16 +31,22 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       newSocket.on("connect", () => {
         setIsConnected(true);
         console.log("Cliente conectado al servidor de sockets");
+        newSocket.emit("getUserConversations", userId);
 
         newSocket.on("conversationStarted", (conv) => {
           console.log("Conversación iniciada:", conv);
           setConversation({...conv}); 
         });
+
+        newSocket.on("sendUserConversations", (conversations) => {
+          console.log("Conversaciones obtenidas:", conversations);
+          setConversationList([...conversations]); 
+        });
       });
 
       newSocket.on("error", () => {
         setIsConnected(false);
-        console.log("Desconectado del servidor de sockets");
+        console.log("Error, desconectado del servidor de sockets");
       });
   
       newSocket.on("disconnect", () => {
@@ -49,8 +60,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     }, [serverUrl, userId]);
   
     const contextValue = useMemo(() => 
-      ({ socket, isConnected, conversation }), 
-      [socket, isConnected, conversation]);
+      ({ socket, isConnected, conversation, conversationList }), 
+      [socket, isConnected, conversation, conversationList]);
   
     return (
         <SocketContext.Provider value={contextValue}>

@@ -56,6 +56,8 @@ io.on("connection", (socket) => {
 
   setupChatSocket(io, socket);
 
+
+
   socket.on("disconnect", () => {
     console.log(`Socket ${socket.id} desconectado`);
   });
