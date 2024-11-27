@@ -7,10 +7,11 @@ import { emptyMessage } from "../utils/mockData";
 type MessageEditProps = {
   setIsVisible: (visible: boolean) => void;
   setFocusedMessage: (message:MessageProps) => void
+  setMessageType: (type:"new") => void
   message: MessageProps;
 };
 
-const MessageEdit: React.FC<MessageEditProps> = ({ setIsVisible, setFocusedMessage, message }) => (
+const MessageEdit: React.FC<MessageEditProps> = ({ setIsVisible, setFocusedMessage, setMessageType, message }) => (
   <div
     data-testid="message-edit"
     className="flex justify-start items-center gap-3 text-primary-800 bg-primary-50 px-4 pb-2 pt-1"
@@ -25,6 +26,7 @@ const MessageEdit: React.FC<MessageEditProps> = ({ setIsVisible, setFocusedMessa
       onClick={() => {
         setIsVisible(false)
         setFocusedMessage(emptyMessage)
+        setMessageType("new")
       }}
     >
       <FontAwesomeIcon icon={faClose} />

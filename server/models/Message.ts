@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 interface IMessage {
   id: string;
-  type: "recipient" | "sender";
   content: string;
   author: Schema.Types.ObjectId;
   createdAt: string;
@@ -10,13 +9,11 @@ interface IMessage {
   replyOfMessage: string;
   reactions: unknown[];
   isReply: boolean;
-  messageToReply: string;
   isEdited: boolean;
 }
 
 const MessageSchema: Schema<IMessage> = new mongoose.Schema(
   {
-    type: { type: String, required: true, default: "sender" },
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref:"User", required: true },
     conversation: {type: Schema.Types.ObjectId, ref:"Conversation", required: true },

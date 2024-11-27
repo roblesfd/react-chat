@@ -35,12 +35,11 @@ const mockMessageList: MessageProps[] = [
     replyOfMessage: "",
     reactions: [],
     isReply: false,
-    messageToReply: "",
     isEdited: false,
   },
   {
     id: uuid(),
-    type: "sender",
+    
     content:
       " Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, rem?",
     author: {
@@ -50,14 +49,13 @@ const mockMessageList: MessageProps[] = [
     replyOfMessage: "",
     reactions: [] as unknown[],
     isReply: false,
-    messageToReply: "",
     isEdited: true,
   },
 ];
 
 const emptyMessage: MessageProps = {
   id:uuid(),
-  type: "sender",
+  
   content: "",
   author: {
     username: "",
@@ -66,13 +64,12 @@ const emptyMessage: MessageProps = {
   replyOfMessage: "",
   reactions: [],
   isReply: false,
-  messageToReply: "",
   isEdited: false,
 };
 
 const dataMessage: MessageProps = {
   id: "100",
-  type: "sender",
+  
   content: "Cuerpo del mensaje",
   author: {
     username: "Juanson",
@@ -81,7 +78,6 @@ const dataMessage: MessageProps = {
   replyOfMessage: "",
   reactions: [],
   isReply: false,
-  messageToReply: "",
   isEdited: false,
 };
 

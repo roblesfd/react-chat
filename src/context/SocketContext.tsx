@@ -7,6 +7,8 @@ export interface SocketContextProps {
   isConnected: boolean;
   conversation: ConversationProps | null;
   conversationList: ConversationProps[] | []
+  setConversationList: (conversationList: ConversationProps[]) => void
+
 }
 
 export const SocketContext = createContext<SocketContextProps | undefined>(undefined);

@@ -9,7 +9,7 @@ import crypto from "crypto";
 // @access Private
 const getAllUsers = async (req: Request, res: Response): Promise<any> => {
   try {
-    const users = await User.find().select("-password").lean();
+    const users = await User.find().select("-password");
     if (!users?.length) {
       return res.status(404).json({ message: "No hay usuarios" });
     }
@@ -35,21 +35,20 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
 
   try {
     const duplicatedUser = await User.findOne({ username })
-      .collation({ locale: "es", strength: 2 })
-      .lean();
+      .collation({ locale: "es", strength: 2 });
 
     if (duplicatedUser) {
       return res.status(409).json({ message: "Nombre de usuario duplicado" });
     }
 
-    const duplicatedEmail = await User.findOne({ email }).lean().exec();
+    const duplicatedEmail = await User.findOne({ email }).exec();
 
     if (duplicatedEmail) {
       return res.status(409).json({ message: "Correo electrónico duplicado" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    let token = crypto.randomBytes(20).toString("hex");
+    const token = crypto.randomBytes(20).toString("hex");
 
     const user = await User.create({
       username,
@@ -62,13 +61,11 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
     });
 
     if (user) {
-      // if (isClient) {
       emailConfirmacion({
         nombre: user.username,
         email: user.email,
         token: user.token,
       });
-      // }
       return res.status(201).json({ message: `Nuevo usuario: ${username}` });
     } else {
       return res.status(400).json({ message: "Error al crear un usuario" });
@@ -87,7 +84,7 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
 const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id).select("-password").exec();
+    const user = await User.findById(id).select("-password");
     if (user) {
       res.status(200).json(user);
     } else {
@@ -108,7 +105,7 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
 const getUserByToken = async (req: Request, res: Response): Promise<void> => {
   try {
     const { token } = req.params;
-    const user = await User.findOne({ token }).select("-password").exec();
+    const user = await User.findOne({ token }).select("-password");
     if (user) {
       res.status(200).json(user);
     } else {
@@ -150,7 +147,6 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
 
     const duplicate = await User.findOne({ username })
       .collation({ locale: "es", strength: 2 })
-      .lean()
       .exec();
 
     if (duplicate && duplicate?._id.toString() !== id) {
@@ -221,7 +217,6 @@ const deleteAllUsers = async (req: Request, res: Response): Promise<void> => {
     }
 
     const result = await User.deleteMany({});
-    console.log(result);
     res.status(200).json({
       message: "Se han eliminado todos los usuarios de la coleccion 'Users'",
     });

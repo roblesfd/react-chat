@@ -60,8 +60,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     }, [serverUrl, userId]);
   
     const contextValue = useMemo(() => 
-      ({ socket, isConnected, conversation, conversationList }), 
-      [socket, isConnected, conversation, conversationList]);
+      ({ socket, isConnected, conversation, conversationList, setConversationList }), 
+      [socket, isConnected, conversation, conversationList, setConversationList]);
   
     return (
         <SocketContext.Provider value={contextValue}>

@@ -9,12 +9,9 @@ import { useContext } from "react";
 import UserContext from "../context/UserContext";
 import {handleStartConversation} from "../../server/sockets/chatSocket"
 
-
-
 export type UserItemProps = {
   data: UserProps;
 };
-
 
 const UserItem: React.FC<UserItemProps> = ({
   data,
@@ -27,13 +24,8 @@ const UserItem: React.FC<UserItemProps> = ({
   const optionList = [
     {
       title: "Iniciar conversación",
-      onClick: () => handleStartConversation(data["_id"], user.id, socket),
+      onClick: () => handleStartConversation(user.id, data["_id"] , socket),
       icon: faUserPlus as IconDefinition
-    },
-    {
-      title: "Bloquear",
-      onClick: () => console.log("Bloquear!!!"),
-      icon: faUserLock as IconDefinition
     },
   ]
   

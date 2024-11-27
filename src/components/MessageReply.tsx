@@ -7,10 +7,16 @@ import { emptyMessage } from "../utils/mockData";
 type MessageReplyProps = {
   setIsVisible: (visible: boolean) => void;
   setFocusedMessage: (message: MessageProps) => void;
+  setMessageType: (type:"new") => void
   message: MessageProps;
 };
 
-const MessageReply: React.FC<MessageReplyProps> = ({ setIsVisible, setFocusedMessage, message }) => (
+const MessageReply: React.FC<MessageReplyProps> = ({ 
+  setIsVisible, 
+  setFocusedMessage, 
+  message, 
+  setMessageType 
+}) => (
   <div
     data-testid="message-reply"
     className="flex justify-start items-center gap-3 text-primary-800 bg-primary-50 px-4 pb-2 pt-1"
@@ -26,6 +32,7 @@ const MessageReply: React.FC<MessageReplyProps> = ({ setIsVisible, setFocusedMes
       onClick={() => {
         setFocusedMessage(emptyMessage);
         setIsVisible(false)
+        setMessageType("new")
       }}
     >
       <FontAwesomeIcon icon={faClose} />

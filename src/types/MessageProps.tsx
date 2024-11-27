@@ -1,6 +1,5 @@
 export type MessageProps = {
   id: string;
-  type: "recipient" | "sender";
   content: string;
   author: {
     username: string;
@@ -9,6 +8,5 @@ export type MessageProps = {
   replyOfMessage: string;
   reactions: unknown[];
   isReply: boolean;
-  messageToReply: string;
   isEdited: boolean;
 };

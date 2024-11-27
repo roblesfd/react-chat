@@ -1,21 +1,23 @@
 import { Server, Socket } from "socket.io";
 import Conversation from "../models/Conversation";
 import Message from "../models/Message";
-import {UserProps} from "../../src/types/UserProps"
-import {UserState} from "../../src/context/UserContext"
-import { ConversationProps } from "../../src/types/ConversationProps";
+import { MessageProps } from "../../src/types/MessageProps";
 
 interface MessagePayLoad {
-    conversationId: string;
-    senderId: string;
-    content: string;
-    messages: []
+  conversationId: string;
+  senderId: string;
+  message: MessageProps;
 }
 
+interface UpdatedMessagePayLoad {
+  message: MessageProps;
+}
+
+
 interface StartConversationPayload {
-    senderId: string;
-    receiverId: string;
-  }
+  senderId: string;
+  receiverId: string;
+}
 
 const connectedUsers : Map<string, string> = new Map();
 
@@ -50,7 +52,7 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
             }
           });
         } catch (error) {
-          console.error("Error al iniciar conversación:", error);
+          console.error("Error en startConversation:", error);
         }
       });
   
@@ -59,17 +61,17 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
         console.log(`Usuario ${userId} con socket ${socket.id} se ha unido`)
     });
 
-    socket.on("sendMessage", async (payload: MessagePayLoad) => {
-      const { conversationId, senderId, content } = payload;
+    socket.on("newMessage", async (payload: MessagePayLoad) => {
+      const { conversationId, senderId, message } = payload;
       try {
-        const message = await Message.create({
+        const msg = await Message.create({
+            ...message,
             conversation: conversationId,
             author: senderId,
-            content,
           });
-        const conversation = await Conversation.findByIdAndUpdate(
+        await Conversation.findByIdAndUpdate(
           conversationId, 
-          { $push: { messages: message._id } }, 
+          { $push: { messages: msg._id } }, 
           { new: true } 
         ).populate({
           path: "messages",
@@ -77,13 +79,42 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
         });
     
       } catch (error) {
-        console.error("Error en sendMessage:", error);
+        console.error("Error en newMessage:", error);
         socket.emit("error", { message: "Error al enviar el mensaje." });
       }
     });
 
+    socket.on("editMessage", async (payload: UpdatedMessagePayLoad) => {
+      const { message } = payload;
+      console.log(message)
+
+      try {
+        await Message.findByIdAndUpdate(
+          message.id,
+          { 
+            content: message.content,
+            isEdited: message.isEdited
+          },
+          { new: true }
+        );
+      } catch (error) {
+        console.error("Error en editMessage:", error);
+        socket.emit("error", { message: "Error al editar el mensaje." });
+      }
+    });
+
+    socket.on("deleteMessage", async (payload: {messageId: string}) => {
+      const { messageId } = payload;
+
+      try {
+        await Message.findByIdAndDelete(messageId);
+      } catch (error) {
+        console.error("Error en deleteMessage:", error);
+        socket.emit("error", { message: "Error al eliminar el mensaje." });
+      }
+    });
+
     socket.on("getUserConversations", async(userId:string) => {
-      console.log("Get conversations", userId);
       try {
         const conversations = await Conversation.find({
           participants: { $all: [userId] },
@@ -100,9 +131,20 @@ export const setupChatSocket = (io:Server, socket: Socket) => {
         }
 
       } catch (error) {
-        console.error("Error al iniciar conversación:", error);
+        console.error("Error en sendUserConversations:", error);
       }
     })
+
+    socket.on("deleteConversation", async (payload:{conversationId:string}) => {
+      const { conversationId } = payload;
+
+      try {
+        await Conversation.findByIdAndDelete(conversationId);
+      } catch (error) {
+        console.error("Error:", error);
+        socket.emit("error", { message: "Error en deleteConversation." });
+      }
+    });
 
     socket.on("disconnect", () => {
         for(const [userId, socketId] of connectedUsers.entries()){
@@ -123,3 +165,47 @@ export const handleStartConversation = (senderId:string, receiverId:string, sock
     });
   }
 }
+
+export const handleNewMessage = (messageData: {
+  conversationId:string, 
+  senderId:string,
+  message:MessageProps
+ },  
+  socket:any) => {
+   const {conversationId, senderId, message} = messageData
+ if (socket) {
+   socket.emit("newMessage", {
+     conversationId, senderId, message
+   });
+ }
+}
+
+export const handleUpdateMessage = (message:MessageProps, socket:any) => {
+  if (socket) {
+    socket.emit("editMessage", {
+      message,
+    });
+  }
+}
+
+export const handleDeleteMessage = (messageId:string, socket:any) => {
+  if (socket) {
+    socket.emit("deleteMessage", {
+      messageId,
+    });
+  }
+}
+
+export const handleDeleteConversation = (conversationId:string, socket:any) => {
+  console.log(conversationId, socket)
+  if (socket) {
+    socket.emit("deleteConversation", {
+      conversationId,
+    });
+  }
+}
+
+
+
+
+

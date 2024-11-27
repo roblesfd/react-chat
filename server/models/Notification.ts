@@ -1,10 +1,11 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface INotification extends Document {
-  userId: Schema.Types.ObjectId; 
-  type: "new_message"; 
-  content: string; 
-  isRead: boolean; 
+  id: string; 
+  userId: Types.ObjectId;
+  type: "new_message";
+  content: string;
+  isRead: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,5 +35,13 @@ const NotificationSchema: Schema<INotification> = new Schema(
     timestamps: true,
   }
 );
+
+// Asegurarte de que `this` tiene el tipo correcto
+NotificationSchema.virtual("id").get(function (this: INotification) {
+  if (!this._id) {
+    throw new Error("El documento no tiene un _id válido");
+  }
+  return this._id.toString(); // Convertir a string explícitamente
+});
 
 export default mongoose.model<INotification>("Notification", NotificationSchema);

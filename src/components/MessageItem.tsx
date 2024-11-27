@@ -4,6 +4,8 @@ import Dropdown from "./Dropdown";
 import { faClose, faEdit, faReply, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { MessageProps } from "../types/MessageProps";
 import { Link } from "react-router-dom";
+import UserContext from "../context/UserContext";
+import { useContext } from "react";
 
 type MessageItemProps = {
   message: MessageProps;
@@ -18,7 +20,8 @@ const MessageItem: React.FC<MessageItemProps> = ({
   onEditMessage,
   onReplyMessage
 }) => {
-  const { id, type, content, createdAt, isEdited, isReply, messageToReply } = message;
+  const {user} = useContext(UserContext)
+  const { id, content, createdAt, isEdited, isReply, replyOfMessage, author } = message;
 
   const optionList = [
     {
@@ -65,12 +68,12 @@ const MessageItem: React.FC<MessageItemProps> = ({
       data-testid="message-item"
       id={`${id}`}
       className={`flex ${
-        type === "sender" ? "flex-row-reverse" : ""
+        user.id === author._id ? "flex-row-reverse" : ""
       } justify-start items-center`}
     >
       <div
         className={`w-11/12 md:w-3/4 md:max-w-[70%] min-h-20 max-h-auto py-2 px-4 ${
-          type === "sender"
+          user.id === author._id
             ? "bg-tertiary-600 text-tertiary-50"
             : "bg-tertiary-100 text-tertiary-800"
         } rounded-lg`}
@@ -80,15 +83,19 @@ const MessageItem: React.FC<MessageItemProps> = ({
             {/* fecha de envio */}
             <p className="text-xs">{createdAt}</p>
           </div>
-          <div>{type === "sender" && <Dropdown {...dropdownInfo} />}</div>
+          <div>
+            {
+            user.id === author._id && <Dropdown {...dropdownInfo} />
+            }
+          </div>
         </div>
         {/* contenido de texto */}
         <div className="mt-2 text-[15px] text-">
           {/* contenido si es una respuesta */}
           {
             isReply ? (
-              <div className="rounded-md bg-tertiary-500 py-6 px-4 text-sm mb-3">
-                <Link to="#"><p className="italic">{messageToReply}</p></Link>
+              <div className={`rounded-md ${user.id === author._id ? "bg-tertiary-500" : "bg-tertiary-300" }  py-6 px-4 text-sm mb-3`}>
+                <Link to="#"><p className="italic">{replyOfMessage}</p></Link>
               </div>
             )
             : null

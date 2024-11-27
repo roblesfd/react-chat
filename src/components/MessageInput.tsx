@@ -7,9 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EmojiPicker from "emoji-picker-react";
 import { useEffect, useState } from "react";
 import { MessageProps } from "../types/MessageProps";
-import { emptyMessage } from "../utils/mockData";
 import { v4 as uuid } from "uuid";
-import { formatDate, formatDateTime, formatTime } from "../utils/dateUtils";
+import { emptyMessage } from "../utils/mockData";
 
 type MessageInputProps = {
   handleSendMessage: (message: MessageProps,  type: "new" | "edit" | "reply" ) => void;
@@ -20,32 +19,31 @@ type MessageInputProps = {
 const MessageInput: React.FC<MessageInputProps> = ({
   handleSendMessage,
   messageType,
-  message=emptyMessage
+  message
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [inputMessage, setInputMessage] = useState<string>("");
-
+  
   useEffect(() => {
     setInputMessage(message ? message.content : "")
   }, [message]);
 
   const handleClick = () => {
     const curDate = new Date();
-    const reply = message ? message.messageToReply : "";
-    let finalMessage: MessageProps = emptyMessage;
+    let finalMessage: MessageProps = {...message};
 
     switch(messageType) {
       case "new":
         finalMessage = {
-          ...emptyMessage,
+          ...finalMessage,
           id: uuid(),
           content: inputMessage, 
-          createdAt: formatDateTime(formatDate(curDate), formatTime(curDate)),
+          createdAt: curDate.toString(),
         };
         break;
       case "edit":
         finalMessage = {
-          ...message, 
+          ...finalMessage, 
           content: inputMessage, 
           isEdited: true
         }
@@ -53,11 +51,12 @@ const MessageInput: React.FC<MessageInputProps> = ({
       case "reply":
         finalMessage = {
           ...emptyMessage,
+          author: finalMessage.author,
+          replyOfMessage: finalMessage.replyOfMessage,
           id: uuid(),
           content: inputMessage,
-          createdAt: formatDateTime(formatDate(curDate), formatTime(curDate)),
+          createdAt: curDate.toString() ,
           isReply: true,
-          messageToReply: reply
         };  
         break;
       default:
