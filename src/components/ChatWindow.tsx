@@ -21,9 +21,9 @@ const ChatWindow = () => {
   const [isEditMessageVisible, setIsEditMessageVisible] = useState(false);
   const [isReplyMessageVisible, setIsReplyMessageVisible] = useState(false);
   const [messageType, setMessageType] = useState<"edit" | "new"  | "reply">("new");
-  const [receiver, setReceiver] = useState<UserProps|undefined>();
   const [focusedMessage, setFocusedMessage] = useState<MessageProps>(emptyMessage);
   const {user} = useContext(UserContext);
+  const [userReceiver, setUserReceiver] = useState<UserProps|null>(null);
   const {conversation, conversationList, socket} = useSocket();
   const dummy = useRef<HTMLDivElement | null>(null);
   const textmessage = {
@@ -37,8 +37,10 @@ const ChatWindow = () => {
     if (conversation) {
       setMessageList([...conversation.messages]);
       const currentConversation = conversationList.find((conv) => conversation["_id"] === conv["_id"]);
-      const userReceiver = currentConversation && currentConversation.participants[1];
-      setReceiver(userReceiver);
+      const received = currentConversation?.participants[1];
+      if(received) {
+        setUserReceiver(received);
+      }
     }
   }, [conversation, conversationList]);
 
@@ -60,7 +62,6 @@ const ChatWindow = () => {
                 (participant) => participant.id === usuario.id
               )
           );
-  
         setUserList(filteredUsers);
       }
     };
@@ -153,12 +154,6 @@ const ChatWindow = () => {
         }
       }, 
       socket);
-    console.log({
-      ...message,
-      author:{
-        ...textmessage.author
-      } 
-    })
   }
 
   const handleSaveEditedMessage = (message: MessageProps) => {
@@ -177,9 +172,9 @@ const ChatWindow = () => {
     >
       <section className="col-span-12 md:col-span-9 bg-primary-40 sm:rounded-md md:rounded-none md:rounded-l-md">
         <div className=" text-primary-600">
-          {conversation && receiver && <ChatHeader name={
-            `${capitalizeString(receiver.name)} 
-             ${capitalizeString(receiver.lastname)} 
+          {conversation && userReceiver && <ChatHeader name={
+            `${capitalizeString(userReceiver.name)} 
+             ${capitalizeString(userReceiver.lastname)} 
             `} /> 
           }
         </div>

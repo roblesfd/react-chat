@@ -3,7 +3,7 @@ import { UserProps } from "./UserProps";
 
 
 export type ConversationProps = {
-    id : string;
+    id: string;
     participants: UserProps[];
     messages: MessageProps[];
     createdAt: string;

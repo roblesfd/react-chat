@@ -1,12 +1,12 @@
+import { UserProps } from "./UserProps";
+
 export type MessageProps = {
   id: string;
   content: string;
-  author: {
-    username: string;
-  };
+  author: UserProps;
   createdAt: string;
+  updatedAt: string;
   replyOfMessage: string;
-  reactions: unknown[];
   isReply: boolean;
   isEdited: boolean;
 };

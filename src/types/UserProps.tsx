@@ -6,7 +6,6 @@ export type UserProps = {
   email: string;
   role: string;
   token: string;
-  friends: [];
   createdAt: string;
   updatedAt: string;
 };

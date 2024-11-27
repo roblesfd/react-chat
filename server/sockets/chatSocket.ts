@@ -13,7 +13,6 @@ interface UpdatedMessagePayLoad {
   message: MessageProps;
 }
 
-
 interface StartConversationPayload {
   senderId: string;
   receiverId: string;
@@ -197,7 +196,6 @@ export const handleDeleteMessage = (messageId:string, socket:any) => {
 }
 
 export const handleDeleteConversation = (conversationId:string, socket:any) => {
-  console.log(conversationId, socket)
   if (socket) {
     socket.emit("deleteConversation", {
       conversationId,

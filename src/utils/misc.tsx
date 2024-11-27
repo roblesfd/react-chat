@@ -13,7 +13,7 @@ const pickRandom = (items: any[]) => items[randomInt(items.length)];
 const shortenString = (str: string, maxChars: number = 13) =>
   str.slice(0, maxChars);
 
-const capitalizeString = (str: string) => str[0].toUpperCase() + str.slice(1);
+const capitalizeString = (str: string) => str ? str[0].toUpperCase() + str.slice(1) : "";
 
 const getDecodedUser = () => {
   const token : string = sessionStorage.getItem("jwt")  

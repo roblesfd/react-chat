@@ -1,29 +1,19 @@
 
 import { createContext } from "react";
+import { UserProps } from "../types/UserProps";
 
-export type UserState = {
-    id: string
-    createdAt: string
-    email: string
-    friends: []
-    lastname: string
-    name: string
-    role: string
-    token: string
-    username: string
-};
 
 type UserContextType = {
-  user: UserState;
-  setUser: (user: UserState) => void;
+  user: UserProps;
+  setUser: (user: UserProps) => void;
 };
 
 const   UserContext = createContext<UserContextType>({
   user: {
     id: "",
     createdAt: "",
+    updatedAt: "",
     email: "",
-    friends: [],
     lastname: "",
     name: "",
     role: "",

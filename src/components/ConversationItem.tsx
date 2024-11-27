@@ -1,4 +1,4 @@
-import {faTrash, faTrashCan, faUser, faVolumeMute, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import {faTrashCan, faUser, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { dropdownData } from "../utils/mockData";

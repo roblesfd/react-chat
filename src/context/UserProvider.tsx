@@ -1,12 +1,13 @@
 import { ReactNode, useState } from "react";
-import UserContext, { UserState } from "./UserContext";
+import UserContext from "./UserContext";
+import { UserProps } from "../types/UserProps";
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<UserState>({
+  const [user, setUser] = useState<UserProps>({
     id: "",
     createdAt: "",
+    updatedAt: "",
     email: "",
-    friends: [],
     lastname: "",
     name: "",
     role: "",

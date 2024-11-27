@@ -1,4 +1,4 @@
-import {faUser, faUserLock, faUserPlus, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import {faUser, faUserPlus, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { dropdownData } from "../utils/mockData";
@@ -18,13 +18,14 @@ const UserItem: React.FC<UserItemProps> = ({
 }) => {
   const { name, lastname } = data;
   const {socket} = useSocket();
-  const {user} = useContext(UserContext)
-
+  const {user} = useContext(UserContext);
 
   const optionList = [
     {
       title: "Iniciar conversación",
-      onClick: () => handleStartConversation(user.id, data["_id"] , socket),
+      onClick: () => {
+        handleStartConversation(user.id, data.id, socket);
+      },
       icon: faUserPlus as IconDefinition
     },
   ]

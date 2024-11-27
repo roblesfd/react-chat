@@ -26,14 +26,21 @@ const mensajes = [
 const mockMessageList: MessageProps[] = [
   {
     id: uuid(),
-    type: "recipient",
     content: "Este es el cuerpo del mensaje khhk  ksdhfk sdkjhsdkjshdfkjshdfkjhsfdkjshdfkjshdfkjshdfkjsdhfkjsdhfkjshdfkjshdfkjshdf dsfhjksdfhjksd fksjdfh ksjdfskdjf hskjdfh skdjf sdkjfhsd kfjhs fksdfhskjd fskdjfh sdfk sdkfjh skdfhsdfk",
-    author: {
-      username: "Nombre del autor",
+    author:  {
+      id: "",
+      username: "",
+      name: "",
+      lastname: "",
+      email: "",
+      role: "",
+      token: "",
+      createdAt: "",
+      updatedAt: "",
     },
     createdAt: "27/03/2024 a las 17:58",
+    updatedAt: "27/03/2024 a las 18:58",
     replyOfMessage: "",
-    reactions: [],
     isReply: false,
     isEdited: false,
   },
@@ -42,12 +49,20 @@ const mockMessageList: MessageProps[] = [
     
     content:
       " Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, rem?",
-    author: {
-      username: "Nombre del autor",
+    author:  {
+      id: "",
+      username: "",
+      name: "",
+      lastname: "",
+      email: "",
+      role: "",
+      token: "",
+      createdAt: "",
+      updatedAt: "",
     },
     createdAt: "27/03/2024 a las 17:58",
+    updatedAt: "27/03/2024 a las 18:58",
     replyOfMessage: "",
-    reactions: [] as unknown[],
     isReply: false,
     isEdited: true,
   },
@@ -55,28 +70,42 @@ const mockMessageList: MessageProps[] = [
 
 const emptyMessage: MessageProps = {
   id:uuid(),
-  
   content: "",
-  author: {
+  author:  {
+    id: "",
     username: "",
+    name: "",
+    lastname: "",
+    email: "",
+    role: "",
+    token: "",
+    createdAt: "",
+    updatedAt: "",
   },
   createdAt: "",
+  updatedAt:"",
   replyOfMessage: "",
-  reactions: [],
   isReply: false,
   isEdited: false,
 };
 
 const dataMessage: MessageProps = {
   id: "100",
-  
   content: "Cuerpo del mensaje",
   author: {
-    username: "Juanson",
+    id: "",
+    username: "",
+    name: "",
+    lastname: "",
+    email: "",
+    role: "",
+    token: "",
+    createdAt: "",
+    updatedAt: "",
   },
   createdAt: "",
+  updatedAt: "",
   replyOfMessage: "",
-  reactions: [],
   isReply: false,
   isEdited: false,
 };

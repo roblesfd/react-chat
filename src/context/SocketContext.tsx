@@ -6,8 +6,9 @@ export interface SocketContextProps {
   socket: Socket | null;
   isConnected: boolean;
   conversation: ConversationProps | null;
-  conversationList: ConversationProps[] | []
-  setConversationList: (conversationList: ConversationProps[]) => void
+  setConversation: (conversation: ConversationProps) => void;
+  conversationList: ConversationProps[] | [];
+  setConversationList: (conversationList: ConversationProps[]) => void;
 
 }
 

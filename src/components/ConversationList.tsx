@@ -15,7 +15,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   data,
 }) => {
   const {user} = useContext(UserContext);
-  const {socket} = useSocket();
+  const {socket, setConversation} = useSocket();
 
   return (
     <div data-testid="conversation-list">
@@ -26,7 +26,10 @@ const ConversationList: React.FC<ConversationListProps> = ({
             <ConversationItem 
               key={key} 
               data={conversation} 
-              onClick={()=>handleStartConversation(user.id, conversation.participants[1].id, socket)} />
+              onClick={()=>{
+                setConversation({...conversation})
+                handleStartConversation(user.id, conversation.participants[1].id, socket)
+              }} />
           ))
         ) : (
           <span>No hay conversaciones</span>

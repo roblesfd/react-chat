@@ -18,10 +18,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     const [isConnected, setIsConnected] = useState(false);
     const [conversation, setConversation] = useState<ConversationProps | null>(null);
     const [conversationList, setConversationList] = useState<ConversationProps[]>([]);
-
-    useEffect(() => {
-      
-    });
   
     useEffect(() => {
       const newSocket = io(serverUrl, { query: { userId } });
@@ -60,8 +56,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     }, [serverUrl, userId]);
   
     const contextValue = useMemo(() => 
-      ({ socket, isConnected, conversation, conversationList, setConversationList }), 
-      [socket, isConnected, conversation, conversationList, setConversationList]);
+      ({ socket, isConnected, conversation, setConversation, conversationList, setConversationList }), 
+      [socket, isConnected, conversation, setConversation, conversationList, setConversationList]);
   
     return (
         <SocketContext.Provider value={contextValue}>

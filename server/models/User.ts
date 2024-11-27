@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 interface IUser {
   username: string;
@@ -9,11 +9,6 @@ interface IUser {
   role: "client" | "admin";
   token: string;
   active: boolean;
-  friends: {
-    type: Types.ObjectId;
-    ref: string;
-    required: boolean;
-  }[];
 }
 
 const UserSchema: Schema<IUser> = new mongoose.Schema(
@@ -25,7 +20,6 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     password: { type: String, required: true },
     role: { type: String, enum: ["client", "admin"], default: "client" },
     token: { type: String },
-    friends: [{ type: Schema.Types.ObjectId, ref: "User", required: false }],
   },
   { 
     timestamps: true, 
