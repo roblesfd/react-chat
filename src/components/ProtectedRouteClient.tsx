@@ -1,16 +1,16 @@
 import { Outlet, Link } from "react-router-dom";
 
 type ProtectedRouteClientProps = {
-  id:string
-}
+  id: string;
+};
 
-const ProtectedRouteClient : React.FC<ProtectedRouteClientProps> = ({ id }) => {
+const ProtectedRouteClient: React.FC<ProtectedRouteClientProps> = ({ id }) => {
   let content;
 
   if (!id && id.length === 0) {
     content = (
-    <div className="min-h-screen flex flex-col justify-center items-center">      
-      <p className="text-3xl text-center ">
+      <div className="min-h-screen flex flex-col justify-center items-center">
+        <p className="text-3xl text-center ">
           <Link to="/ingresar" className="font-semibold underline">
             Por favor inicia sesión
           </Link>
@@ -18,7 +18,7 @@ const ProtectedRouteClient : React.FC<ProtectedRouteClientProps> = ({ id }) => {
       </div>
     );
   } else {
-    return <Outlet /> 
+    return <Outlet />;
   }
   return content;
 };

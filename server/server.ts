@@ -42,8 +42,8 @@ app.use("/", express.static(path.join(__dirname, "public")));
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST", "PATCH", "DELETE"]
-  }
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+  },
 });
 
 io.on("connection", (socket) => {
@@ -55,8 +55,6 @@ io.on("connection", (socket) => {
   });
 
   setupChatSocket(io, socket);
-
-
 
   socket.on("disconnect", () => {
     console.log(`Socket ${socket.id} desconectado`);
@@ -73,7 +71,6 @@ app.use("/auth", authRoutes);
 app.use("/conversaciones", conversationRoutes);
 app.use("/notificaciones", notificationRoutes);
 app.use("/mensajes", messageRoutes);
-
 
 // Manejo de rutas no encontradas (404)
 app.all("/*", (req: Request, res: Response) => {
@@ -96,7 +93,7 @@ mongoose.connection.once("open", () => {
 });
 
 mongoose.connection.on("error", (err: any) => {
-  console.log(process.env.DATABASE_URI)
+  console.log(process.env.DATABASE_URI);
   console.log(err);
   logEvents(
     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,

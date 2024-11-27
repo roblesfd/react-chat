@@ -34,8 +34,10 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
   }
 
   try {
-    const duplicatedUser = await User.findOne({ username })
-      .collation({ locale: "es", strength: 2 });
+    const duplicatedUser = await User.findOne({ username }).collation({
+      locale: "es",
+      strength: 2,
+    });
 
     if (duplicatedUser) {
       return res.status(409).json({ message: "Nombre de usuario duplicado" });

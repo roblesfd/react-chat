@@ -1,7 +1,7 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MessageProps } from "../types/MessageProps";
-import {v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 
 const dropdownData = {
   button: (
@@ -11,7 +11,6 @@ const dropdownData = {
   ),
   options: [],
 };
-
 
 const mensajes = [
   "Hola, ¿cómo estás?",
@@ -26,8 +25,9 @@ const mensajes = [
 const mockMessageList: MessageProps[] = [
   {
     id: uuid(),
-    content: "Este es el cuerpo del mensaje khhk  ksdhfk sdkjhsdkjshdfkjshdfkjhsfdkjshdfkjshdfkjshdfkjsdhfkjsdhfkjshdfkjshdfkjshdf dsfhjksdfhjksd fksjdfh ksjdfskdjf hskjdfh skdjf sdkjfhsd kfjhs fksdfhskjd fskdjfh sdfk sdkfjh skdfhsdfk",
-    author:  {
+    content:
+      "Este es el cuerpo del mensaje khhk  ksdhfk sdkjhsdkjshdfkjshdfkjhsfdkjshdfkjshdfkjshdfkjsdhfkjsdhfkjshdfkjshdfkjshdf dsfhjksdfhjksd fksjdfh ksjdfskdjf hskjdfh skdjf sdkjfhsd kfjhs fksdfhskjd fskdjfh sdfk sdkfjh skdfhsdfk",
+    author: {
       id: "",
       username: "",
       name: "",
@@ -46,10 +46,10 @@ const mockMessageList: MessageProps[] = [
   },
   {
     id: uuid(),
-    
+
     content:
       " Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, rem?",
-    author:  {
+    author: {
       id: "",
       username: "",
       name: "",
@@ -69,9 +69,9 @@ const mockMessageList: MessageProps[] = [
 ];
 
 const emptyMessage: MessageProps = {
-  id:uuid(),
+  id: uuid(),
   content: "",
-  author:  {
+  author: {
     id: "",
     username: "",
     name: "",
@@ -83,7 +83,7 @@ const emptyMessage: MessageProps = {
     updatedAt: "",
   },
   createdAt: "",
-  updatedAt:"",
+  updatedAt: "",
   replyOfMessage: "",
   isReply: false,
   isEdited: false,
@@ -118,12 +118,11 @@ const decodedEmpty = {
   },
 };
 
-
 export {
   dropdownData,
   mensajes,
   mockMessageList,
   emptyMessage,
   dataMessage,
-  decodedEmpty
+  decodedEmpty,
 };

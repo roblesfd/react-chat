@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/", createConversation);
 router.get("/:userId", getConversationsByUser);
-router.patch("/:conversationId", updateConversation)
+router.patch("/:conversationId", updateConversation);
 router.delete("/:id", deleteConversation);
 
 export default router;

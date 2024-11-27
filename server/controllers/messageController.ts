@@ -21,7 +21,9 @@ const createMessage = async (req: Request, res: Response) => {
 const getMessagesByConversation = async (req: Request, res: Response) => {
   try {
     const { conversationId } = req.params;
-    const messages = await Message.find({ conversationId }).sort({ createdAt: 1 });
+    const messages = await Message.find({ conversationId }).sort({
+      createdAt: 1,
+    });
     res.status(200).json(messages);
   } catch (error) {
     console.error(error);
@@ -33,21 +35,21 @@ const getMessagesByConversation = async (req: Request, res: Response) => {
 // @route PATCH /mensajes/:id
 // @access Private
 const updateMessage = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const {content} = req.body;
-      const message = await Message.findById(id);
-      if(message) {
-        message.content = content;
-        message.isEdited = true;
-        message.save();
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error editando el mensaje" });
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+    const message = await Message.findById(id);
+    if (message) {
+      message.content = content;
+      message.isEdited = true;
+      message.save();
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error editando el mensaje" });
+  }
 };
-  
+
 // @desc Eliminar un mensaje
 // @route DELETE /mensajes/:id
 // @access Private
@@ -62,10 +64,9 @@ const deleteMessage = async (req: Request, res: Response) => {
   }
 };
 
-
 export {
-    createMessage,
-    getMessagesByConversation,
-    updateMessage,
-    deleteMessage
-}
+  createMessage,
+  getMessagesByConversation,
+  updateMessage,
+  deleteMessage,
+};

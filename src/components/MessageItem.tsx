@@ -1,7 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dropdownData } from "../utils/mockData";
 import Dropdown from "./Dropdown";
-import { faClose, faEdit, faReply, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClose,
+  faEdit,
+  faReply,
+  IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
 import { MessageProps } from "../types/MessageProps";
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
@@ -18,48 +23,47 @@ const MessageItem: React.FC<MessageItemProps> = ({
   message,
   onDeleteMessage,
   onEditMessage,
-  onReplyMessage
+  onReplyMessage,
 }) => {
-  const {user} = useContext(UserContext)
-  const { id, content, createdAt, isEdited, isReply, replyOfMessage, author } = message;
+  const { user } = useContext(UserContext);
+  const { id, content, createdAt, isEdited, isReply, replyOfMessage, author } =
+    message;
 
   const optionList = [
     {
-      key:"editar",
+      key: "editar",
       title: "Editar",
       onClick: () => onEditMessage(id),
-      icon: faEdit as IconDefinition
+      icon: faEdit as IconDefinition,
     },
     {
-      key:"eliminar",
+      key: "eliminar",
       title: "Eliminar",
       onClick: () => onDeleteMessage(id),
-      icon: faClose as IconDefinition
-    },    
+      icon: faClose as IconDefinition,
+    },
     {
-      key:"responder",
+      key: "responder",
       title: "Responder",
       onClick: () => onReplyMessage(id),
-      icon: faReply as IconDefinition
+      icon: faReply as IconDefinition,
     },
-  ]
-  
+  ];
 
   const dropdownInfo = {
     ...dropdownData,
     options: [
-      ...optionList.map((option => (
+      ...optionList.map((option) => (
         <div key={option.key} className="w-full">
-        <button
-          onClick={option.onClick}
-          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 px-2 py-1"
-        >
-          <span>{option.title}</span>
-          <FontAwesomeIcon icon={option.icon} className="text-md" />
-        </button>
-      </div>
-      )))
-
+          <button
+            onClick={option.onClick}
+            className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 px-2 py-1"
+          >
+            <span>{option.title}</span>
+            <FontAwesomeIcon icon={option.icon} className="text-md" />
+          </button>
+        </div>
+      )),
     ],
   };
 
@@ -83,23 +87,22 @@ const MessageItem: React.FC<MessageItemProps> = ({
             {/* fecha de envio */}
             <p className="text-xs">{createdAt}</p>
           </div>
-          <div>
-            {
-            user.id === author._id && <Dropdown {...dropdownInfo} />
-            }
-          </div>
+          <div>{user.id === author._id && <Dropdown {...dropdownInfo} />}</div>
         </div>
         {/* contenido de texto */}
         <div className="mt-2 text-[15px] text-">
           {/* contenido si es una respuesta */}
-          {
-            isReply ? (
-              <div className={`rounded-md ${user.id === author._id ? "bg-tertiary-500" : "bg-tertiary-300" }  py-6 px-4 text-sm mb-3`}>
-                <Link to="#"><p className="italic">{replyOfMessage}</p></Link>
-              </div>
-            )
-            : null
-          }
+          {isReply ? (
+            <div
+              className={`rounded-md ${
+                user.id === author._id ? "bg-tertiary-500" : "bg-tertiary-300"
+              }  py-6 px-4 text-sm mb-3`}
+            >
+              <Link to="#">
+                <p className="italic">{replyOfMessage}</p>
+              </Link>
+            </div>
+          ) : null}
           <p className="break-all">{content}</p>
         </div>
         {isEdited && (

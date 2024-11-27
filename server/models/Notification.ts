@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface INotification extends Document {
-  id: string; 
+  id: string;
   userId: Types.ObjectId;
   type: "new_message";
   content: string;
@@ -44,4 +44,7 @@ NotificationSchema.virtual("id").get(function (this: INotification) {
   return this._id.toString(); // Convertir a string explícitamente
 });
 
-export default mongoose.model<INotification>("Notification", NotificationSchema);
+export default mongoose.model<INotification>(
+  "Notification",
+  NotificationSchema
+);

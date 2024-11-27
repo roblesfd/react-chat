@@ -3,18 +3,22 @@ import Signup from "./views/Signup";
 import Login from "./views/Login";
 import MainLayout from "./components/MainLayout";
 import ChatView from "./views/ChatView";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import ProtectedRouteClient from "./components/ProtectedRouteClient";
 import LoggedInLayout from "./components/LoggedInLayout";
 import { requestGetUserByToken } from "./api/apiUsers";
-import {useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import UserContext from "./context/UserContext";
-import {decodedEmpty } from "./utils/mockData";
+import { decodedEmpty } from "./utils/mockData";
 
 function App() {
-  const {setUser} = useContext(UserContext);
-  const token : string = sessionStorage.getItem("jwt")  ? JSON.parse(sessionStorage.getItem("jwt") as string) : "";
-  const decodedUser = token ?  jwtDecode(token) as typeof decodedEmpty : decodedEmpty;
+  const { setUser } = useContext(UserContext);
+  const token: string = sessionStorage.getItem("jwt")
+    ? JSON.parse(sessionStorage.getItem("jwt") as string)
+    : "";
+  const decodedUser = token
+    ? (jwtDecode(token) as typeof decodedEmpty)
+    : decodedEmpty;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,12 +28,12 @@ function App() {
       }
     };
     fetchUser();
-  }, [token]); 
- 
+  }, [token]);
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
-      <Route element={<ProtectedRouteClient id={decodedUser.UserInfo.id} />}>
+        <Route element={<ProtectedRouteClient id={decodedUser.UserInfo.id} />}>
           <Route element={<LoggedInLayout />}>
             <Route index element={<ChatView />} />
           </Route>
@@ -37,7 +41,6 @@ function App() {
         <Route path="/registrarse" element={<Signup />} />
         <Route path="/ingresar" element={<Login />} />
       </Route>
-
     </Routes>
   );
 }

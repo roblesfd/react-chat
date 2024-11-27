@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import ModalContext, { ModalState } from "./ModalContext";
 import Modal from "../components/Modal";
 
@@ -7,17 +7,10 @@ const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     isOpen: false,
     content: "",
   });
-  const [renderComponent, setRenderComponent] = useState(false);
-
-  useEffect(() => {
-    setRenderComponent(true);
-  });
-
-  if (!renderComponent) return <></>;
 
   return (
     <ModalContext.Provider value={{ modal, setModal }}>
-      <Modal width={"400px"}/>
+      <Modal width={"400px"} />
       {children}
     </ModalContext.Provider>
   );

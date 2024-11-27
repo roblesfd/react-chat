@@ -15,7 +15,6 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     username: "",
   });
 
-
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

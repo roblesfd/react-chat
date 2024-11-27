@@ -1,7 +1,6 @@
 import toast from "react-hot-toast";
 
-const requestGetUserByToken = async (token:string) => {
-
+const requestGetUserByToken = async (token: string) => {
   try {
     const response = await fetch(
       process.env.BACKEND_URL + "/usuarios/user-by-token/" + token,

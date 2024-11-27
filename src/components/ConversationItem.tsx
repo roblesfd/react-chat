@@ -1,4 +1,8 @@
-import {faTrashCan, faUser, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrashCan,
+  faUser,
+  IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { dropdownData } from "../utils/mockData";
@@ -14,15 +18,16 @@ export type ConversationItemProps = {
   onClick?: (...args: unknown[]) => void;
 };
 
-
 const ConversationItem: React.FC<ConversationItemProps> = ({
   data,
   onClick = () => {},
 }) => {
-  const {user} = useContext(UserContext)
-  const {socket, conversationList, setConversationList} = useSocket()
-  const participant = data.participants.filter(participant => participant.id !== user.id)
-  const {messages} = data;
+  const { user } = useContext(UserContext);
+  const { socket, conversationList, setConversationList } = useSocket();
+  const participant = data.participants.filter(
+    (participant) => participant.id !== user.id
+  );
+  const { messages } = data;
   const { name, lastname } = participant[0];
   const fullName = `${capitalizeString(name)} ${capitalizeString(lastname)}`;
 
@@ -30,28 +35,30 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
     {
       title: "Eliminar conversación",
       onClick: () => {
-        const fillteredConversationList = conversationList.filter((conv) => conv._id !== data._id)
-        setConversationList([...fillteredConversationList])
-        handleDeleteConversation(data._id, socket)
+        const fillteredConversationList = conversationList.filter(
+          (conv) => conv._id !== data._id
+        );
+        setConversationList([...fillteredConversationList]);
+        handleDeleteConversation(data._id, socket);
       },
-      icon: faTrashCan as IconDefinition
+      icon: faTrashCan as IconDefinition,
     },
-  ]
-  
+  ];
+
   const dropdownInfo = {
     ...dropdownData,
-    options: optionList.map(option => (
-        <div className="w-full">
-          <button
-            onClick={option.onClick}
-            className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
-          >
-            <span>{option.title}</span>
-            <FontAwesomeIcon icon={option.icon} className="text-md" />
-          </button>
-        </div>
-    ))
-  }
+    options: optionList.map((option) => (
+      <div className="w-full">
+        <button
+          onClick={option.onClick}
+          className="w-full flex items-center justify-end gap-3 hover:bg-slate-200 py-1 px-2"
+        >
+          <span>{option.title}</span>
+          <FontAwesomeIcon icon={option.icon} className="text-md" />
+        </button>
+      </div>
+    )),
+  };
 
   return (
     <div
@@ -67,10 +74,11 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
         <h5 className="text-[14px] mb-1 font-semibold">
           {shortenString(`${fullName}`, 11)}...
         </h5>
-          <p className="text-[12px]">{
-          messages.length > 0 
-          && shortenString(messages[messages.length-1].content, 12)
-          }...</p>
+        <p className="text-[12px]">
+          {messages.length > 0 &&
+            shortenString(messages[messages.length - 1].content, 12)}
+          ...
+        </p>
       </div>
       <div className="col-span-2">
         <Dropdown {...dropdownInfo} />

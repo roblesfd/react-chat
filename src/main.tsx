@@ -18,10 +18,10 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <UserProvider>
         <SocketProvider serverUrl={serverUrl as string} userId={userId}>
-            <ModalProvider>
-                <Toaster />
-                <App />
-            </ModalProvider>
+          <ModalProvider>
+            <Toaster />
+            <App />
+          </ModalProvider>
         </SocketProvider>
       </UserProvider>
     </BrowserRouter>

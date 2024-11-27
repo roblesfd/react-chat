@@ -9,8 +9,8 @@ import {
 const router = express.Router();
 
 router.post("/", createMessage);
-router.get("/:conversationId", getMessagesByConversation); 
-router.patch("/:id", updateMessage)
+router.get("/:conversationId", getMessagesByConversation);
+router.patch("/:id", updateMessage);
 router.delete("/:id", deleteMessage);
 
 export default router;

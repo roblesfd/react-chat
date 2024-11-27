@@ -35,9 +35,9 @@ const getConversationsByUser = async (req: Request, res: Response) => {
 const updateConversation = async (req: Request, res: Response) => {
   try {
     const { conversationId } = req.params;
-    const {messages} = req.body;
+    const { messages } = req.body;
     const conversation = await Conversation.findById({ conversationId });
-    if(conversation) {
+    if (conversation) {
       conversation.messages = messages;
       conversation.save();
       res.status(200).json(conversation);
@@ -47,7 +47,6 @@ const updateConversation = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Error obteniendo conversaciones" });
   }
 };
-
 
 // @desc Eliminar una conversación
 // @route DELETE /conversaciones/:id
@@ -63,10 +62,9 @@ const deleteConversation = async (req: Request, res: Response) => {
   }
 };
 
-
 export {
   createConversation,
   getConversationsByUser,
   updateConversation,
   deleteConversation,
-}
+};

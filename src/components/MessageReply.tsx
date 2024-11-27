@@ -7,15 +7,15 @@ import { emptyMessage } from "../utils/mockData";
 type MessageReplyProps = {
   setIsVisible: (visible: boolean) => void;
   setFocusedMessage: (message: MessageProps) => void;
-  setMessageType: (type:"new") => void
+  setMessageType: (type: "new") => void;
   message: MessageProps;
 };
 
-const MessageReply: React.FC<MessageReplyProps> = ({ 
-  setIsVisible, 
-  setFocusedMessage, 
-  message, 
-  setMessageType 
+const MessageReply: React.FC<MessageReplyProps> = ({
+  setIsVisible,
+  setFocusedMessage,
+  message,
+  setMessageType,
 }) => (
   <div
     data-testid="message-reply"
@@ -31,8 +31,8 @@ const MessageReply: React.FC<MessageReplyProps> = ({
       title="Cancelar respuesta"
       onClick={() => {
         setFocusedMessage(emptyMessage);
-        setIsVisible(false)
-        setMessageType("new")
+        setIsVisible(false);
+        setMessageType("new");
       }}
     >
       <FontAwesomeIcon icon={faClose} />

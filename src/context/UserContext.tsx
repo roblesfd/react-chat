@@ -1,14 +1,12 @@
-
 import { createContext } from "react";
 import { UserProps } from "../types/UserProps";
-
 
 type UserContextType = {
   user: UserProps;
   setUser: (user: UserProps) => void;
 };
 
-const   UserContext = createContext<UserContextType>({
+const UserContext = createContext<UserContextType>({
   user: {
     id: "",
     createdAt: "",
@@ -23,7 +21,4 @@ const   UserContext = createContext<UserContextType>({
   setUser: () => {},
 });
 
-export default  UserContext;
-
-
-
+export default UserContext;

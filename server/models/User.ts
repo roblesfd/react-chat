@@ -21,15 +21,15 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     role: { type: String, enum: ["client", "admin"], default: "client" },
     token: { type: String },
   },
-  { 
-    timestamps: true, 
-    toJSON: { virtuals: true }, 
-    toObject: { virtuals: true } 
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
-UserSchema.virtual('id').get(function() {
+UserSchema.virtual("id").get(function () {
   return this._id.toString();
-})
+});
 
 export default mongoose.model<IUser>("User", UserSchema);

@@ -1,4 +1,3 @@
-
 type ChatHeaderProps = {
   name: string;
 };

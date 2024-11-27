@@ -1,15 +1,3 @@
-// Muestra cuanto tiempo a entre una fecha indicada comparandola con la actual
-// Ejemplo: Fecha ind: 21 Feb, Fecha act: 26 Feb
-// Texto a mostrar: Hace 5 dias
-
-/*
-Salidas de acuerdo al tiempo transcurrido
-
-Hioras: Hace x horas
-Dias (1-7): Hace 7 dias
-A partir de 1 semana: [Fecha-exacta]
-*/
-
 const timeUnits = [
   { label: "año", ms: 1000 * 60 * 60 * 24 * 365 },
   { label: "mes", ms: 1000 * 60 * 60 * 24 * 30 },
